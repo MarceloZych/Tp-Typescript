@@ -1,10 +1,7 @@
 import express from "express";
 
-class EstudianteController {
-    constructor () {}
+const router = express.Router()
 
-    async consultarTodos(res:Request, req: Request) {
+import estudianteController from '../controllers/EstudianteController'
 
-    }
-    
-}
+router.get('/', estudianteController.consultarTodos)
