@@ -1,10 +1,60 @@
+import { Request, Response } from "express";
 
-routes.get('/', estrudianteController.consultar)
-routes.post('/', estrudianteController.insertar)
+class ProfesorController {
+    constructor() {}
 
-routes.route('/:id')
-        .get(estrudianteController.consultarUno)
-        .put(estrudianteController.modificar)
-        .delete(estrudianteController.eliminar)
+    async consultarTodos(req: Request, res: Response):Promise<void> {
+        try{
+            res.send("conssultar todos")
+        }catch (err) {
+            if (err instanceof Error) {
+                res.status(500).send(err.message)
+            }
+        }
+    }
 
-module.exports = routes
+    async consultarUno (req: Request, res: Response):Promise<void> {
+        const {id} = req.params
+        try{
+            res.send("consultar uno")
+        } catch (err) {
+            if (err instanceof Error) {
+                res.status(500).send(err.message)
+            }
+        }
+    }
+
+    async insertar (req: Request, res:Response):Promise<void> {
+        const {nombre, descripcion, profesor_id} = req.body
+        try {
+            res.send("insertar profesor")
+        } catch (err) {
+            if (err instanceof Error) {
+                res.status(500).send(err.message)
+            }
+        }
+    }
+
+    async modificar (req: Request, res: Response):Promise<void> {
+        const {id} = req.params
+        const {nombre,descripcion,profesor_id} = req.body
+        try {
+            res.send("modificar profesor")
+        } catch (err) {
+            if (err instanceof Error){
+                res.status(500).send(err.message)
+            }
+        }
+    }
+
+    async eliminar   (req: Request, res: Response):Promise<void> {
+        const {id} = req.params
+        try {
+            res.send("modificar profesor")
+        } catch (err) {
+            if (err instanceof Error){
+                res.status(500).send(err.message)
+            }
+        }
+    }
+}

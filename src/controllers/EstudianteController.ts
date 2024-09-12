@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-
+/*
 class EstudianteController {
     constructor(){}
 
@@ -59,4 +59,14 @@ class EstudianteController {
     }
 }
 
-export default new EstudianteController()
+export default new EstudianteController()*/
+
+import { AppDataSource } from "../db/db";
+import { EstudianteModel } from "../models/EstudianteModel";
+
+const estudianteRespository = AppDataSource.getRepository(EstudianteModel)
+
+export const consultarTodos = async (req: Request, res: Response){
+    const estudiante = await estudianteRespository.find()
+    res.json(estudiante)
+}
