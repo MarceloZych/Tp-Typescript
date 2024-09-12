@@ -66,7 +66,28 @@ import { EstudianteModel } from "../models/EstudianteModel";
 
 const estudianteRespository = AppDataSource.getRepository(EstudianteModel)
 
-export const consultarTodos = async (req: Request, res: Response){
+export const consultarTodos = async (req: Request, res: Response) => {
     const estudiante = await estudianteRespository.find()
     res.json(estudiante)
+}
+
+export const consultarUno = async (req: Request, res: Response) => {
+    const estudiante = await estudianteRespository.findOneBy({ id: parseInt(req.params.id)})
+    res.json(estudiante)
+}
+
+export const insertar = async (req: Request, res: Response) => {
+    const estudiante = estudianteRespository.create(req.body)
+    const result = await estudianteRespository.save(estudiante)
+}
+
+export const modificar = async (req: Request, res: Response) => {
+    const estudiante = await estudianteRespository.findOneBy({ id: parseInt(req.params.id )})
+    if (!estudiante) {
+        return res.status(404).json({ message: "Curso no encontrado"})
+    }
+
+    estudianteRespository.merge(estudiante, req.body)
+    const result = await estudianteRespository.save(estudiante)
+    res.json(result)
 }
