@@ -1,93 +1,81 @@
-import { Request, Response } from "express"
-/*
+import { Request, Response } from "express";
+import { AppDataSource } from "../db/db";
+import { EstudianteModel } from "../models/EstudianteModel";
+
+const estudianteRepository = AppDataSource.getRepository(EstudianteModel)
+
 class EstudianteController {
-    constructor(){}
+    constructor() {}
 
     async consultarTodos(req: Request, res: Response):Promise<void> {
         try{
-            res.send("conssultar todos")
+            const estudiante = await estudianteRepository.find()
+            res.json(estudiante)
         }catch (err) {
             if (err instanceof Error) {
-                res.status(500).send(err.message)
+                res.status(500).json({message: err.message})
             }
         }
     }
 
     async consultarUno (req: Request, res: Response):Promise<void> {
-        const {id} = req.params
         try{
-            res.send("consultar uno")
+            const estudiante = await estudianteRepository.findOneBy({ id: parseInt(req.params.id) })
+            if (!estudiante) {
+                res.status(404).json({ message: "Curso no encontrado"})
+            } else {
+                res.json(estudiante)
+            }
         } catch (err) {
             if (err instanceof Error) {
-                res.status(500).send(err.message)
+                res.status(500).json({message: err.message})
             }
         }
     }
 
     async insertar (req: Request, res:Response):Promise<void> {
-        const {nombre, descripcion, profesor_id} = req.body
         try {
-            res.send("insertar estyduate")
+            const estudianteCurso = estudianteRepository.create(req.body)
+            const guardarEstudiante = await estudianteRepository.save(estudianteCurso)
+            res.json(guardarEstudiante)
         } catch (err) {
             if (err instanceof Error) {
-                res.status(500).send(err.message)
+                res.status(500).json({message: err.message})
             }
         }
     }
 
     async modificar (req: Request, res: Response):Promise<void> {
-        const {id} = req.params
-        const {nombre,descripcion,profesor_id} = req.body
         try {
-            res.send("modificar estudiante")
+            const modificarEstudiante = await estudianteRepository.findOneBy({ id: parseInt(req.params.id) })
+            if (!modificarEstudiante) {
+                res.status(500).json({ message: "curso no encontrado"})
+                return
+            }
+            estudianteRepository.merge(modificarEstudiante, req.body)
+            const estudianteResult = await estudianteRepository.save(modificarEstudiante)
+            res.json(estudianteResult)
         } catch (err) {
-            if (err instanceof Error){
-                res.status(500).send(err.message)
+            if (err instanceof Error) {
+                res.status(500).json({message: err.message})
             }
         }
     }
 
     async eliminar   (req: Request, res: Response):Promise<void> {
-        const {id} = req.params
         try {
-            res.send("modificar estudiante")
+            const eliminarEstudiante = await estudianteRepository.delete({ id: parseInt(req.params.id) })
+            if (eliminarEstudiante.affected === 0) {
+                res.status(404).json({ message: "Curso no encontrado" })
+            } else {
+                res.status(200).json({ message: "Curso eliminado correctamente"})
+            }
         } catch (err) {
-            if (err instanceof Error){
-                res.status(500).send(err.message)
+            if (err instanceof Error) {
+                res.status(500).json({message: err.message})
             }
         }
     }
 }
 
-export default new EstudianteController()*/
-
-import { AppDataSource } from "../db/db";
-import { EstudianteModel } from "../models/EstudianteModel";
-
-const estudianteRespository = AppDataSource.getRepository(EstudianteModel)
-
-export const consultarTodos = async (req: Request, res: Response) => {
-    const estudiante = await estudianteRespository.find()
-    res.json(estudiante)
-}
-
-export const consultarUno = async (req: Request, res: Response) => {
-    const estudiante = await estudianteRespository.findOneBy({ id: parseInt(req.params.id)})
-    res.json(estudiante)
-}
-
-export const insertar = async (req: Request, res: Response) => {
-    const estudiante = estudianteRespository.create(req.body)
-    const result = await estudianteRespository.save(estudiante)
-}
-
-export const modificar = async (req: Request, res: Response) => {
-    const estudiante = await estudianteRespository.findOneBy({ id: parseInt(req.params.id )})
-    if (!estudiante) {
-        return res.status(404).json({ message: "Curso no encontrado"})
-    }
-
-    estudianteRespository.merge(estudiante, req.body)
-    const result = await estudianteRespository.save(estudiante)
-    res.json(result)
-}
+export default new EstudianteController()

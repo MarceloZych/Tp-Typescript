@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const routes = (0, express_1.Router)();
+const InscripcionController = require('../controllers/inscripcionController');
+routes.get('/', InscripcionController.consultarTodos);
+routes.get('/xcurso/:id', InscripcionController.consultarxCurso);
+routes.get('/xestudiante/:id', InscripcionController.consultarxEstudiante);
+routes.post('/', InscripcionController.inscribir);
+exports.default = routes;

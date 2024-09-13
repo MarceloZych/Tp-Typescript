@@ -58,3 +58,5 @@ class ProfesorController {
         }
     }
 }
+
+export default new ProfesorController()
