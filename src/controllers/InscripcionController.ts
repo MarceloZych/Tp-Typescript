@@ -19,8 +19,9 @@ class InscripcionController {
     }
 
     async consultarUno (req: Request, res: Response):Promise<void> {
+        const { estudiante_id, curso_id } = req.params
         try{
-            const inscripcion = await inscripcionRepository.findOneBy({ id: parseInt(req.params.id) })
+            const inscripcion = await inscripcionRepository.findOneBy({ estudiante_id: parseInt(estudiante_id), curso_id: parseInt(curso_id) })
             if (!inscripcion) {
                 res.status(404).json({ message: "Inscripcion no encontrado"})
             } else {
@@ -46,8 +47,9 @@ class InscripcionController {
     }
 
     async modificar (req: Request, res: Response):Promise<void> {
+        const { estudiante_id, curso_id } = req.params
         try {
-            const modificarInscripcion = await inscripcionRepository.findOneBy({ id: parseInt(req.params.id) })
+            const modificarInscripcion = await inscripcionRepository.findOneBy({ estudiante_id: parseInt(estudiante_id), curso_id: parseInt(curso_id) })
             if (!modificarInscripcion) {
                 res.status(500).json({ message: "curso no encontrado"})
                 return
@@ -63,8 +65,9 @@ class InscripcionController {
     }
 
     async eliminar   (req: Request, res: Response):Promise<void> {
+        const { estudiante_id, curso_id } = req.params
         try {
-            const eliminarInscripcion = await inscripcionRepository.delete({ id: parseInt(req.params.id) })
+            const eliminarInscripcion = await inscripcionRepository.delete({ estudiante_id: parseInt(estudiante_id), curso_id: parseInt(curso_id) })
             if (eliminarInscripcion.affected === 0) {
                 res.status(404).json({ message: "Curso no encontrado" })
             } else {
