@@ -1,12 +1,15 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const CursoController_1 = __importDefault(require("../controllers/CursoController"));
 const routes = (0, express_1.Router)();
-const cursoController = require('../controllers/cursoController');
-routes.get('/', cursoController.consultar);
-routes.post('/', cursoController.insertar);
+routes.get('/', CursoController_1.default.consultarTodos);
+routes.post('/', CursoController_1.default.insertar);
 routes.route('/:id')
-    .get(cursoController.consultarUno)
-    .put(cursoController.modificar)
-    .delete(cursoController.eliminar);
+    .get(CursoController_1.default.consultarUno)
+    .put(CursoController_1.default.modificar)
+    .delete(CursoController_1.default.eliminar);
 exports.default = routes;

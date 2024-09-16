@@ -9,69 +9,89 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const db_1 = require("../db/db");
+const CursoModel_1 = require("../models/CursoModel");
+const cursoRepository = db_1.AppDataSource.getRepository(CursoModel_1.CursoModel);
 class CursoController {
     constructor() { }
     consultarTodos(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                res.send("conssultar todos");
+                const cursos = yield cursoRepository.find();
+                res.json(cursos);
             }
             catch (err) {
                 if (err instanceof Error) {
-                    res.status(500).send(err.message);
+                    res.status(500).json({ message: err.message });
                 }
             }
         });
     }
     consultarUno(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
             try {
-                res.send("consultar uno");
+                const curso = yield cursoRepository.findOneBy({ id: parseInt(req.params.id) });
+                if (!curso) {
+                    res.status(404).json({ message: "Curso no encontrado" });
+                }
+                else {
+                    res.json(curso);
+                }
             }
             catch (err) {
                 if (err instanceof Error) {
-                    res.status(500).send(err.message);
+                    res.status(500).json({ message: err.message });
                 }
             }
         });
     }
     insertar(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { nombre, descripcion, profesor_id } = req.body;
             try {
-                res.send("insertar curso");
+                const crearCurso = cursoRepository.create(req.body);
+                const guardarCurso = yield cursoRepository.save(crearCurso);
+                res.json(guardarCurso);
             }
             catch (err) {
                 if (err instanceof Error) {
-                    res.status(500).send(err.message);
+                    res.status(500).json({ message: err.message });
                 }
             }
         });
     }
     modificar(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            const { nombre, descripcion, profesor_id } = req.body;
             try {
-                res.send("modificar curso");
+                const modificarCurso = yield cursoRepository.findOneBy({ id: parseInt(req.params.id) });
+                if (!modificarCurso) {
+                    res.status(500).json({ message: "curso no encontrado" });
+                    return;
+                }
+                cursoRepository.merge(modificarCurso, req.body);
+                const cursoResult = yield cursoRepository.save(modificarCurso);
+                res.json(modificarCurso);
             }
             catch (err) {
                 if (err instanceof Error) {
-                    res.status(500).send(err.message);
+                    res.status(500).json({ message: err.message });
                 }
             }
         });
     }
     eliminar(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
             try {
-                res.send("modificar curso");
+                const eliminarCurso = yield cursoRepository.delete({ id: parseInt(req.params.id) });
+                if (eliminarCurso.affected === 0) {
+                    res.status(404).json({ message: "Curso no encontrado" });
+                }
+                else {
+                    res.status(200).json({ message: "Curso eliminado correctamente" });
+                }
             }
             catch (err) {
                 if (err instanceof Error) {
-                    res.status(500).send(err.message);
+                    res.status(500).json({ message: err.message });
                 }
             }
         });

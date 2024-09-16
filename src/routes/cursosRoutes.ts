@@ -1,14 +1,13 @@
 import { Router } from "express"
+import CursoController from "../controllers/CursoController"
+const routes = Router()
 
-const routes: Router = Router()
-const cursoController = require('../controllers/cursoController')
-
-routes.get('/', cursoController.consultar)
-routes.post('/', cursoController.insertar)
+routes.get('/', CursoController.consultarTodos)
+routes.post('/', CursoController.insertar)
 
 routes.route('/:id')
-        .get(cursoController.consultarUno)
-        .put(cursoController.modificar)
-        .delete(cursoController.eliminar)
+        .get(CursoController.consultarUno)
+        .put(CursoController.modificar)
+        .delete(CursoController.eliminar)
 
 export default routes

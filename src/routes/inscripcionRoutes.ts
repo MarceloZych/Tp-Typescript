@@ -1,11 +1,11 @@
 import { Router } from "express"
+import InscripcionController from "../controllers/InscripcionController"
 
-const routes: Router = Router()
-const InscripcionController = require('../controllers/inscripcionController')
+const routes = Router()
 
 routes.get('/', InscripcionController.consultarTodos)
-routes.get('/xcurso/:id', InscripcionController.consultarxCurso)
-routes.get('/xestudiante/:id', InscripcionController.consultarxEstudiante)
-routes.post('/', InscripcionController.inscribir)
+routes.get('/xcurso/:id', InscripcionController.consultarUno)
+routes.get('/xestudiante/:id', InscripcionController.consultarUno)
+routes.post('/', InscripcionController.insertar)
 
 export default routes

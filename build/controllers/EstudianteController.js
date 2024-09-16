@@ -11,26 +11,90 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = require("../db/db");
 const EstudianteModel_1 = require("../models/EstudianteModel");
-const estudianteRespository = db_1.AppDataSource.getRepository(EstudianteModel_1.EstudianteModel);
-const consultarTodos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const estudiante = yield estudianteRespository.find();
-    res.json(estudiante);
-});
-const consultarUno = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const estudiante = yield estudianteRespository.findOneBy({ id: parseInt(req.params.id) });
-    res.json(estudiante);
-});
-const insertar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const estudiante = estudianteRespository.create(req.body);
-    const result = yield estudianteRespository.save(estudiante);
-});
-const modificar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const estudiante = yield estudianteRespository.findOneBy({ id: parseInt(req.params.id) });
-    if (!estudiante) {
-        return res.status(404).json({ message: "Curso no encontrado" });
+const estudianteRepository = db_1.AppDataSource.getRepository(EstudianteModel_1.EstudianteModel);
+class EstudianteController {
+    constructor() { }
+    consultarTodos(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const estudiante = yield estudianteRepository.find();
+                res.json(estudiante);
+            }
+            catch (err) {
+                if (err instanceof Error) {
+                    res.status(500).json({ message: err.message });
+                }
+            }
+        });
     }
-    estudianteRespository.merge(estudiante, req.body);
-    const result = yield estudianteRespository.save(estudiante);
-    res.json(result);
-});
-exports.default = { consultarTodos, consultarUno, insertar, modificar };
+    consultarUno(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const estudiante = yield estudianteRepository.findOneBy({ id: parseInt(req.params.id) });
+                if (!estudiante) {
+                    res.status(404).json({ message: "Curso no encontrado" });
+                }
+                else {
+                    res.json(estudiante);
+                }
+            }
+            catch (err) {
+                if (err instanceof Error) {
+                    res.status(500).json({ message: err.message });
+                }
+            }
+        });
+    }
+    insertar(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const estudianteCurso = estudianteRepository.create(req.body);
+                const guardarEstudiante = yield estudianteRepository.save(estudianteCurso);
+                res.json(guardarEstudiante);
+            }
+            catch (err) {
+                if (err instanceof Error) {
+                    res.status(500).json({ message: err.message });
+                }
+            }
+        });
+    }
+    modificar(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const modificarEstudiante = yield estudianteRepository.findOneBy({ id: parseInt(req.params.id) });
+                if (!modificarEstudiante) {
+                    res.status(500).json({ message: "curso no encontrado" });
+                    return;
+                }
+                estudianteRepository.merge(modificarEstudiante, req.body);
+                const estudianteResult = yield estudianteRepository.save(modificarEstudiante);
+                res.json(estudianteResult);
+            }
+            catch (err) {
+                if (err instanceof Error) {
+                    res.status(500).json({ message: err.message });
+                }
+            }
+        });
+    }
+    eliminar(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const eliminarEstudiante = yield estudianteRepository.delete({ id: parseInt(req.params.id) });
+                if (eliminarEstudiante.affected === 0) {
+                    res.status(404).json({ message: "Curso no encontrado" });
+                }
+                else {
+                    res.status(200).json({ message: "Curso eliminado correctamente" });
+                }
+            }
+            catch (err) {
+                if (err instanceof Error) {
+                    res.status(500).json({ message: err.message });
+                }
+            }
+        });
+    }
+}
+exports.default = new EstudianteController();
