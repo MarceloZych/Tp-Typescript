@@ -1,10 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const InscripcionController_1 = __importDefault(require("../controllers/InscripcionController"));
 const routes = (0, express_1.Router)();
-const InscripcionController = require('../controllers/inscripcionController');
-routes.get('/', InscripcionController.consultarTodos);
-routes.get('/xcurso/:id', InscripcionController.consultarxCurso);
-routes.get('/xestudiante/:id', InscripcionController.consultarxEstudiante);
-routes.post('/', InscripcionController.inscribir);
+routes.get('/', InscripcionController_1.default.consultarTodos);
+routes.get('/xcurso/:id', InscripcionController_1.default.consultarUno);
+routes.get('/xestudiante/:id', InscripcionController_1.default.consultarUno);
+routes.post('/', InscripcionController_1.default.insertar);
 exports.default = routes;

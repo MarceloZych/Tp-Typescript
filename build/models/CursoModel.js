@@ -18,28 +18,28 @@ let CursoModel = class CursoModel {
 exports.CursoModel = CursoModel;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", Number)
 ], CursoModel.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], CursoModel.prototype, "nombre", void 0);
 __decorate([
     (0, typeorm_1.Column)('text'),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], CursoModel.prototype, "descripcion", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", Date)
 ], CursoModel.prototype, "createAt", void 0);
 __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", Date)
 ], CursoModel.prototype, "updateAt", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => ProfesorModel_1.ProfesorModel, profesor => profesor.cursos),
     (0, typeorm_1.JoinColumn)({ name: 'Profesores_id' }),
-    __metadata("design:type", Object)
+    __metadata("design:type", ProfesorModel_1.ProfesorModel)
 ], CursoModel.prototype, "profesor", void 0);
 __decorate([
     (0, typeorm_1.ManyToMany)(() => EstudianteModel_1.EstudianteModel),
@@ -48,7 +48,7 @@ __decorate([
         joinColumn: { name: 'curso_id', referencedColumnName: 'id' },
         inverseJoinColumn: { name: 'estudiante_id', referencedColumnName: 'id' }
     }),
-    __metadata("design:type", Object)
+    __metadata("design:type", EstudianteModel_1.EstudianteModel)
 ], CursoModel.prototype, "estudiante", void 0);
 exports.CursoModel = CursoModel = __decorate([
     (0, typeorm_1.Entity)()

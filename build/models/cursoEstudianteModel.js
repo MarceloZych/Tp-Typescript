@@ -18,29 +18,29 @@ let CursoEstudianteModel = class CursoEstudianteModel {
 exports.CursoEstudianteModel = CursoEstudianteModel;
 __decorate([
     (0, typeorm_1.PrimaryColumn)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", Number)
 ], CursoEstudianteModel.prototype, "estudiante_id", void 0);
 __decorate([
     (0, typeorm_1.PrimaryColumn)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", Number)
 ], CursoEstudianteModel.prototype, "curso_id", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'float' }),
-    __metadata("design:type", Object)
+    __metadata("design:type", Number)
 ], CursoEstudianteModel.prototype, "nota", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'date' }),
-    __metadata("design:type", Object)
+    __metadata("design:type", Date)
 ], CursoEstudianteModel.prototype, "fecha", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => EstudianteModel_1.EstudianteModel, (estudiante) => estudiante.curso),
     (0, typeorm_1.JoinColumn)({ name: 'estudiante_id' }),
-    __metadata("design:type", Object)
+    __metadata("design:type", EstudianteModel_1.EstudianteModel)
 ], CursoEstudianteModel.prototype, "estudiante", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => CursoModel_1.CursoModel, (curso) => curso.estudiante),
     (0, typeorm_1.JoinColumn)({ name: 'curso_id' }),
-    __metadata("design:type", Object)
+    __metadata("design:type", CursoModel_1.CursoModel)
 ], CursoEstudianteModel.prototype, "curso", void 0);
 exports.CursoEstudianteModel = CursoEstudianteModel = __decorate([
     (0, typeorm_1.Entity)('cursos_estudiantes')

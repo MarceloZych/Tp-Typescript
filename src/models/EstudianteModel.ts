@@ -7,28 +7,28 @@ export class EstudianteModel {
     id!: number
 
     @Column()
-    dni: number | undefined
+    dni: number
 
     @Column()
-    nombre: string | undefined
+    nombre: string
 
     @Column()
-    apellido: string | undefined
+    apellido: string
     
     @Column()
-    email: string | undefined
+    email: string
 
     @Column()
-    profesion: string | undefined
+    profesion: string
 
     @Column()
-    telefono: string | undefined   
+    telefono: string   
     
     @CreateDateColumn()
-    createAt: Date | undefined
+    createAt: Date
 
     @UpdateDateColumn()
-    updateAt: Date | undefined
+    updateAt: Date
 
     @ManyToMany(()=> CursoModel)
     @JoinTable({
@@ -36,5 +36,5 @@ export class EstudianteModel {
         joinColumn: { name: 'estudiante_id', referencedColumnName: 'id' },
         inverseJoinColumn: { name: 'curso_id' , referencedColumnName: 'id'}
     })
-    curso: CursoModel[] | undefined
+    curso: CursoModel[]
 }

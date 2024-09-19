@@ -6,23 +6,23 @@ import { EstudianteModel } from './EstudianteModel'
 @Entity()
 export class CursoModel {
     @PrimaryGeneratedColumn()
-    id: number | undefined  
+    id: number  
 
     @Column()
-    nombre: string | undefined
+    nombre: string
 
     @Column('text')
-    descripcion: string | undefined
+    descripcion: string
 
     @CreateDateColumn()
-    createAt: Date | undefined
+    createAt: Date
 
     @UpdateDateColumn()
-    updateAt: Date | undefined
+    updateAt: Date
 
     @ManyToOne(()=> ProfesorModel, profesor => profesor.cursos)
     @JoinColumn({name:'Profesores_id'})
-    profesor: ProfesorModel | undefined
+    profesor: ProfesorModel
 
     @ManyToMany(()=> EstudianteModel)
     @JoinTable({
@@ -30,5 +30,5 @@ export class CursoModel {
         joinColumn: { name: 'curso_id', referencedColumnName: 'id' },
         inverseJoinColumn: { name: 'estudiante_id', referencedColumnName: 'id' }
     })
-    estudiante: EstudianteModel | undefined
+    estudiante: EstudianteModel
 }

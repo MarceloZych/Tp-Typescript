@@ -1,8 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm'
-import { CursoModel } from './CursoModel'
+import { CursoModel } from "./CursoModel";
 
-@Entity('profesores')
+@Entity('Profesores')
 export class ProfesorModel {
+    
     @PrimaryGeneratedColumn()
     id: number | undefined
 

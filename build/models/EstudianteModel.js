@@ -21,35 +21,35 @@ __decorate([
 ], EstudianteModel.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", Number)
 ], EstudianteModel.prototype, "dni", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], EstudianteModel.prototype, "nombre", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], EstudianteModel.prototype, "apellido", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], EstudianteModel.prototype, "email", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], EstudianteModel.prototype, "profesion", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], EstudianteModel.prototype, "telefono", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", Date)
 ], EstudianteModel.prototype, "createAt", void 0);
 __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", Date)
 ], EstudianteModel.prototype, "updateAt", void 0);
 __decorate([
     (0, typeorm_1.ManyToMany)(() => CursoModel_1.CursoModel),
@@ -58,7 +58,7 @@ __decorate([
         joinColumn: { name: 'estudiante_id', referencedColumnName: 'id' },
         inverseJoinColumn: { name: 'curso_id', referencedColumnName: 'id' }
     }),
-    __metadata("design:type", Object)
+    __metadata("design:type", Array)
 ], EstudianteModel.prototype, "curso", void 0);
 exports.EstudianteModel = EstudianteModel = __decorate([
     (0, typeorm_1.Entity)()

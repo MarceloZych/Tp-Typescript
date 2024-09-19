@@ -5,22 +5,22 @@ import { CursoModel } from "./CursoModel";
 @Entity('cursos_estudiantes')
 export class CursoEstudianteModel {
     @PrimaryColumn()
-    public estudiante_id: number | undefined
+    public estudiante_id: number
 
     @PrimaryColumn()
-    public curso_id: number | undefined
+    public curso_id: number
 
     @Column({ type: 'float' })
-    public nota: number | undefined
+    public nota: number
 
     @Column({ type: 'date' })
-    public fecha: Date | undefined
+    public fecha: Date
 
     @ManyToOne(()=> EstudianteModel, (estudiante)=> estudiante.curso)
     @JoinColumn({ name: 'estudiante_id' })
-    public estudiante: EstudianteModel | undefined
+    public estudiante: EstudianteModel
 
     @ManyToOne(()=> CursoModel, (curso)=> curso.estudiante)
     @JoinColumn({ name: 'curso_id' })
-    public curso: CursoModel | undefined
+    public curso: CursoModel
 }

@@ -1,13 +1,13 @@
 import { log } from 'console'
 import app from './app'
-import { initializeDataBase } from './db/db'
+import { inicializeDatabase } from './db/db'
 
 const port = parseInt(process.env.PORT || '6050', 10)
 const host = process.env.HOST || '0.0.0.0'
 
 async function main() {
     try {
-        await initializeDataBase()
+        await inicializeDatabase()
         console.log('Base de datos conectada');
         
         app.listen(port, host, ()=> {
