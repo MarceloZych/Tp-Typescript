@@ -5,32 +5,32 @@ import { CursoModel } from "./CursoModel";
 export class ProfesorModel {
     
     @PrimaryGeneratedColumn()
-    id: number | undefined
+    id: number
 
     @Column()
-    dni: string | undefined
+    dni: string
     
     @Column()
-    nombre: string | undefined
+    nombre: string
 
     @Column()
-    apellido: string | undefined
+    apellido: string
 
     @Column()
-    email: string | undefined
+    email: string
 
     @Column()
-    profesion: string | undefined
+    profesion: string
 
     @Column()
-    telefono: string | undefined
+    telefono: string
 
     @CreateDateColumn()
-    createAt: Date | undefined
+    createAt: Date
 
     @UpdateDateColumn()
-    updateAt: Date | undefined
+    updateAt: Date
 
     @OneToMany(()=> CursoModel, (curso)=> curso.profesor)
-    cursos: CursoModel[] | undefined
+    cursos: CursoModel[]
 }

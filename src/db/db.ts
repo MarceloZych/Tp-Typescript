@@ -39,7 +39,7 @@ import { createConnection } from "mysql2/promise";
 import {EstudianteModel} from "../models/EstudianteModel";
 import {CursoModel} from "../models/CursoModel";
 import { ProfesorModel } from "../models/ProfesorModel";
-import { CursoEstudianteModel } from "../models/CursoEstudianteModel"; 
+import { CursoEstudianteModel } from "../models/CursoEstudianteModel";
 
 async function createDatabaseIfNotExists(){
     const connection = await createConnection({

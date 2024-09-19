@@ -1,0 +1,14 @@
+extends ./layout
+
+block contenido
+    .flex.justify-content-end.mb-4
+        ul.flex.space-x-4
+            li 
+                a(href="/estudiantes/crearEstudiante" class="text-green-600 hover:text-green-800") Agregar estudiante
+
+    .py-10
+        h1.text-center.text-2xl.font-extrabold Proyecto
+            span.font-normal Universidad
+        h2.text-center.text-2xl.font-extrabold= pagina
+
+        table.text-auto.w-full.mt-4

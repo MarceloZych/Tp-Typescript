@@ -17,43 +17,43 @@ let ProfesorModel = class ProfesorModel {
 exports.ProfesorModel = ProfesorModel;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", Number)
 ], ProfesorModel.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], ProfesorModel.prototype, "dni", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], ProfesorModel.prototype, "nombre", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], ProfesorModel.prototype, "apellido", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], ProfesorModel.prototype, "email", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], ProfesorModel.prototype, "profesion", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], ProfesorModel.prototype, "telefono", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", Date)
 ], ProfesorModel.prototype, "createAt", void 0);
 __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
-    __metadata("design:type", Object)
+    __metadata("design:type", Date)
 ], ProfesorModel.prototype, "updateAt", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => CursoModel_1.CursoModel, (curso) => curso.profesor),
-    __metadata("design:type", Object)
+    __metadata("design:type", Array)
 ], ProfesorModel.prototype, "cursos", void 0);
 exports.ProfesorModel = ProfesorModel = __decorate([
     (0, typeorm_1.Entity)('Profesores')
