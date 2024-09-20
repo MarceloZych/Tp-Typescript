@@ -12,13 +12,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = require("../db/db");
 const EstudianteModel_1 = require("../models/EstudianteModel");
 const estudianteRepository = db_1.AppDataSource.getRepository(EstudianteModel_1.EstudianteModel);
+let estudiantes;
 class EstudianteController {
     constructor() { }
     consultarTodos(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const estudiante = yield estudianteRepository.find();
-                res.json(estudiante);
+                const todosEstudiantes = yield estudianteRepository.find();
+                res.json(todosEstudiantes);
             }
             catch (err) {
                 if (err instanceof Error) {

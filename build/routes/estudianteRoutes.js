@@ -21,7 +21,7 @@ router.get('/crearEstudiantes', (req, res) => {
         pagina: 'Crear Estudiante'
     });
 });
-router.post('/crearEstudiante', EstudianteController_1.default.insertar);
+router.post('/', EstudianteController_1.default.insertar);
 router.get('/modificarEstudiante/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const estudiante = yield EstudianteController_1.default.consultarUno(req, res);

@@ -22,13 +22,13 @@ block contenido
             tbody
                 each estudiante in estudiantes
                     tr
-                        td.px-6.py-4= estuudiante.dni 
-                        td.px-6.py-4= estuudiante.nombre
-                        td.px-6.py-4= estuudiante.dapellido 
-                        td.px-6.py-4= estuudiante.email
+                        td.px-6.py-4= estudiante.dni 
+                        td.px-6.py-4= estudiante.nombre
+                        td.px-6.py-4= estudiante.dapellido 
+                        td.px-6.py-4= estudiante.email
                         td.px-6.py-4
-                            a.text-blue-500(href=`/estudiantes/modificarEstudiante/${estudianet.id}`) Editar
-                            a.text-red-500.ml-2(href=`/estudiantes/${estudianet.id}`) Eliminar
+                            a.text-blue-500(href=`/estudiantes/modificarEstudiante/${estudiante.id}`) Editar
+                            a.text-red-500.ml-2(href=`/estudiantes/${estudiante.id}`) Eliminar
 block script
     script.
         function eliminarEstudiante(id) {

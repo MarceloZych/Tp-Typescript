@@ -1,11 +1,27 @@
 "use strict";
-// import { createConnection } from "mysql2/promise"
-// import { DataSource } from "typeorm"
-// import * as dotenv from 'dotenv'
-// import { ProfesorModel } from '../models/ProfesorModel'
-// import { EstudianteModel } from '../models/EstudianteModel'
-// import { CursoModel } from '../models/CursoModel'
-// dotenv.config()
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -17,63 +33,75 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppDataSource = void 0;
-exports.inicializeDatabase = inicializeDatabase;
-// const port: number = process.env.DB_PORT ? parseInt(process.env.DB_PORT, 10) : 3306
-// async function createDatabaseIfNotExists() {
-//     const connection = await createConnection({
-//         host: process.env.DB_HOST,
-//         port: port,
-//         user: process.env.DB_USER,
-//         password: process.env.DB_PASSWORD
-//     })
-//     await connection.query(`CREATE DATABASE IF NOT EXIST $`)
-// }
-// export const AppDataSource = new DataSource({
-//     type: "mysql",
-//     host: process.env.DB_HOST,
-//     port: port,
-//     username: process.env.DB_USER,
-//     password: process.env.DB_PASSWORD,
-//     database: process.env.DB_DATABASE,
-//     entities: [ProfesorModel, EstudianteModel, CursoModel],
-//     synchronize: true,
-//     logging: true
-// })
-// export async function initializeDataBase() {
-//     await createDatabaseIfNotExists();
-//     await AppDataSource.initialize()
-// }
-const typeorm_1 = require("typeorm");
+exports.initializeDataBase = initializeDataBase;
 const promise_1 = require("mysql2/promise");
+const typeorm_1 = require("typeorm");
+const dotenv = __importStar(require("dotenv"));
+const ProfesorModel_1 = require("../models/ProfesorModel");
 const EstudianteModel_1 = require("../models/EstudianteModel");
 const CursoModel_1 = require("../models/CursoModel");
-const ProfesorModel_1 = require("../models/ProfesorModel");
-const CursoEstudianteModel_1 = require("../models/CursoEstudianteModel");
+dotenv.config();
+const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3306;
 function createDatabaseIfNotExists() {
     return __awaiter(this, void 0, void 0, function* () {
         const connection = yield (0, promise_1.createConnection)({
-            host: "localhost",
-            port: 3306,
-            user: "root",
-            password: "",
+            host: process.env.DB_HOST,
+            port: port,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASSWORD
         });
-        yield connection.query(`CREATE DATABASE IF NOT EXISTS universidad_marce`);
-        yield connection.end();
+        yield connection.query(`CREATE DATABASE IF NOT EXIST ${process.env.DB_DATABASE}`);
+        connection.end();
     });
 }
 exports.AppDataSource = new typeorm_1.DataSource({
     type: "mysql",
-    host: "localhost",
-    username: "root",
-    password: "",
-    database: "universidad_marce",
-    entities: [EstudianteModel_1.EstudianteModel, CursoModel_1.CursoModel, ProfesorModel_1.ProfesorModel, CursoEstudianteModel_1.CursoEstudianteModel],
-    synchronize: true, //lo puse en falso porque sino me crea la bd de nuevo
+    host: process.env.DB_HOST,
+    port: port,
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    entities: [ProfesorModel_1.ProfesorModel, EstudianteModel_1.EstudianteModel, CursoModel_1.CursoModel],
+    synchronize: true,
     logging: true
 });
-function inicializeDatabase() {
+function initializeDataBase() {
     return __awaiter(this, void 0, void 0, function* () {
         yield createDatabaseIfNotExists();
         yield exports.AppDataSource.initialize();
     });
 }
+/*import { DataSource } from "typeorm";
+import { createConnection } from "mysql2/promise";
+import {EstudianteModel} from "../models/EstudianteModel";
+import {CursoModel} from "../models/CursoModel";
+import { ProfesorModel } from "../models/ProfesorModel";
+import { CursoEstudianteModel } from "../models/CursoEstudianteModel";
+
+async function createDatabaseIfNotExists(){
+    const connection = await createConnection({
+        host:"localhost",
+        port:3306,
+        user:"root",
+        password:"",
+    });
+
+    await connection.query(`CREATE DATABASE IF NOT EXISTS universidad_marce`);
+    await connection.end();
+}
+
+export const AppDataSource = new DataSource({
+type:"mysql",
+host:"localhost",
+username:"root",
+password:"",
+database:"universidad_marce",
+entities:[EstudianteModel, CursoModel, ProfesorModel, CursoEstudianteModel],
+synchronize: false, //lo puse en falso porque sino me crea la bd de nuevo
+logging:true
+});
+
+export async function inicializeDatabase(){
+    await createDatabaseIfNotExists();
+    await AppDataSource.initialize();
+}*/ 

@@ -4,13 +4,15 @@ import { EstudianteModel } from "../models/EstudianteModel";
 
 const estudianteRepository = AppDataSource.getRepository(EstudianteModel)
 
+let estudiantes: EstudianteModel[]
+
 class EstudianteController {
     constructor() {}
 
     async consultarTodos(req: Request, res: Response):Promise<void> {
         try{
-            const estudiante = await estudianteRepository.find()
-            res.json(estudiante)
+            const todosEstudiantes = await estudianteRepository.find()
+            res.json(todosEstudiantes)
         }catch (err) {
             if (err instanceof Error) {
                 res.status(500).json({message: err.message})

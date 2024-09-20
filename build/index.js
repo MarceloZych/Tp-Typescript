@@ -19,7 +19,7 @@ const host = process.env.HOST || '0.0.0.0';
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            yield (0, db_1.inicializeDatabase)();
+            yield (0, db_1.initializeDataBase)();
             console.log('Base de datos conectada');
             app_1.default.listen(port, host, () => {
                 console.log(`Servidor activo en el puerto ${port}`);
