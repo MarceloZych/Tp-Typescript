@@ -33,16 +33,20 @@ class EstudianteController {
                 const estudiante = yield estudianteRepository.findOneBy({ id: parseInt(req.params.id) });
                 if (!estudiante) {
                     res.status(404).json({ message: "Curso no encontrado" });
+                    return null;
                 }
                 else {
                     res.json(estudiante);
+                    return estudiante;
                 }
             }
             catch (err) {
                 if (err instanceof Error) {
                     res.status(500).json({ message: err.message });
+                    return null;
                 }
             }
+            return null;
         });
     }
     insertar(req, res) {

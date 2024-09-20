@@ -12,3 +12,42 @@ block contenido
         h2.text-center.text-2xl.font-extrabold= pagina
 
         table.text-auto.w-full.mt-4
+            thead
+                tr
+                    th.text-left.text-gray-500.uppercase.px-6.py-3 Dni
+                    th.text-left.text-gray-500.uppercase.px-6.py-3 Nombre
+                    th.text-left.text-gray-500.uppercase.px-6.py-3 Apellido
+                    th.text-left.text-gray-500.uppercase.px-6.py-3 Email
+                    th.text-left.text-gray-500.uppercase.px-6.py-3 Acciones
+            tbody
+                each estudiante in estudiantes
+                    tr
+                        td.px-6.py-4= estuudiante.dni 
+                        td.px-6.py-4= estuudiante.nombre
+                        td.px-6.py-4= estuudiante.dapellido 
+                        td.px-6.py-4= estuudiante.email
+                        td.px-6.py-4
+                            a.text-blue-500(href=`/estudiantes/modificarEstudiante/${estudianet.id}`) Editar
+                            a.text-red-500.ml-2(href=`/estudiantes/${estudianet.id}`) Eliminar
+block script
+    script.
+        function eliminarEstudiante(id) {
+            if (confirm('¿Estas seguro de que deseas eliminar este estudiar?')) {
+                fetch(`/estudiantes/${id}`, {
+                    method: 'DELETE'
+                })
+            .then(response => response.json())
+            .then(data => {
+                if (data.mensaje === 'Estudiante eliminar') {
+                    alert('Estudiante eliminado con exito')
+                    window.location.reload()
+                } else {
+                    alert(data.mensaje)
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error)
+                alert('Error al eliminar el estudiante')
+            })
+            }
+        }

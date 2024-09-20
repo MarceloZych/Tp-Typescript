@@ -60,7 +60,7 @@ username:"root",
 password:"",
 database:"universidad_marce",
 entities:[EstudianteModel, CursoModel, ProfesorModel, CursoEstudianteModel],
-synchronize: true, //lo puse en falso porque sino me crea la bd de nuevo
+synchronize: false, //lo puse en falso porque sino me crea la bd de nuevo
 logging:true
 });
 

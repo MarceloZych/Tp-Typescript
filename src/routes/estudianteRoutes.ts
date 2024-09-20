@@ -10,7 +10,7 @@ router.get('/crearEstudiantes', (req, res) => {
     })
 })
 
-router.post('/crearEstudiante', EstudianteController.insertar)
+router.post('/', EstudianteController.insertar)
 
 router.get('/modificarEstudiante/:id', async (req, res) => {
     try {
