@@ -1,34 +1,32 @@
-import express, { Request, Response } from 'express'
-import cors from 'cors'
-import morgan from "morgan"
-import path from "path"
+import express, {Request, Response }  from "express";
+import cors from 'cors';
+import morgan from "morgan";
+import path from "path";
 
-import estudianteRouter from "./routes/estudianteRoutes"
-import cursosRoutes from "./routes/cursosRoutes"
-import inscripcionRoutes from "./routes/inscripcionRoutes"
-import profesoresRoutes from "./routes/profesoresRoutes"
-import methodOverride from "method-override"
+import estudianteRoutes from'./routes/estudianteRoutes';
 
-const app = express()
+import methodOverride from 'method-override';
 
-app.set('view engine', 'pug')
-app.set('views', path.join(__dirname, "/views"))
+const app=express();
 
-app.use(express.static('public'))
-app.use(methodOverride('_method'))
-app.use(express.json())
-app.use(express.urlencoded({ extended:true }))
-app.use(morgan('dev'))
-app.use(cors())
+//habilitamos pug
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, '/views'));
+//carpeta pblica
+app.use(express.static('public'));
 
-app.get('/', (req: Request, res: Response) => {
+app.use(methodOverride('_method'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(morgan('dev'));
+app.use(cors());
+
+app.get('/',(req:Request,res:Response)=>{
     return res.render('layout', {
-        pagina: 'App Universidad'
-    })
-})
-app.use('/estudiantes', estudianteRouter)
-app.use('/cursos', cursosRoutes)
-app.use('/inscripcion', inscripcionRoutes)
-app.use('/profesores', profesoresRoutes)
+        pagina: 'App Univerdsidad',
+    });
+});
+app.use('/estudiantes', estudianteRoutes);
 
-export default app
+export default app;

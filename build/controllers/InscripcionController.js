@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = require("../db/db");
-const CursoEstudianteModel_1 = require("../models/CursoEstudianteModel");
-const inscripcionRepository = db_1.AppDataSource.getRepository(CursoEstudianteModel_1.CursoEstudianteModel);
+const CursosEstudiantesModel_1 = require("../models/CursosEstudiantesModel");
+const inscripcionRepository = db_1.AppDataSource.getRepository(CursosEstudiantesModel_1.CursosEstudiantesModel);
 class InscripcionController {
     constructor() { }
     consultarTodos(req, res) {

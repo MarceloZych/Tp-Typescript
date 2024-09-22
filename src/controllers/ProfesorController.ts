@@ -1,4 +1,6 @@
 import { Request, Response } from "express";
+import { AppDataSource } from "../db/db";
+import { ProfesorModel } from "../models/ProfesorModel";
 
 class ProfesorController {
     constructor() {}

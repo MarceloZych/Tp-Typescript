@@ -15,6 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const EstudianteController_1 = __importDefault(require("../controllers/EstudianteController"));
 const router = (0, express_1.Router)();
+/*router.get('/listarEstudiantes', async (req, res) => {
+    const estudiantes = await EstudianteController.consultarTodos(req, res)
+    res.render('listarEstudiantes', {pagina: 'Listar Estudiante' ,estudiantes })
+})*/
 router.get('/listarEstudiantes', EstudianteController_1.default.consultarTodos);
 router.get('/crearEstudiantes', (req, res) => {
     res.render('crearEstudiantes', {

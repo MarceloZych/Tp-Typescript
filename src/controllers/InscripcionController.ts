@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../db/db";
-import { CursoEstudianteModel } from "../models/CursoEstudianteModel";
+import { CursosEstudiantesModel } from "../models/CursosEstudiantesModel";
 
-const inscripcionRepository = AppDataSource.getRepository(CursoEstudianteModel)
+const inscripcionRepository = AppDataSource.getRepository(CursosEstudiantesModel)
 
 class InscripcionController {
     constructor() {}

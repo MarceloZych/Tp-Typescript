@@ -32,7 +32,7 @@ export class EstudianteModel {
 
     @ManyToMany(()=> CursoModel)
     @JoinTable({
-        name: 'curso_estudiantes',
+        name: 'cursos_estudiantes',
         joinColumn: { name: 'estudiante_id', referencedColumnName: 'id' },
         inverseJoinColumn: { name: 'curso_id' , referencedColumnName: 'id'}
     })

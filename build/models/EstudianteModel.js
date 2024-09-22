@@ -54,7 +54,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.ManyToMany)(() => CursoModel_1.CursoModel),
     (0, typeorm_1.JoinTable)({
-        name: 'curso_estudiantes',
+        name: 'cursos_estudiantes',
         joinColumn: { name: 'estudiante_id', referencedColumnName: 'id' },
         inverseJoinColumn: { name: 'curso_id', referencedColumnName: 'id' }
     }),

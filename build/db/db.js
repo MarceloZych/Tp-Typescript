@@ -33,75 +33,42 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppDataSource = void 0;
-exports.initializeDataBase = initializeDataBase;
+exports.intializeDatabase = intializeDatabase;
 const promise_1 = require("mysql2/promise");
 const typeorm_1 = require("typeorm");
 const dotenv = __importStar(require("dotenv"));
 const ProfesorModel_1 = require("../models/ProfesorModel");
 const EstudianteModel_1 = require("../models/EstudianteModel");
+const CursosEstudiantesModel_1 = require("../models/CursosEstudiantesModel");
 const CursoModel_1 = require("../models/CursoModel");
 dotenv.config();
-const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3306;
+const port = process.env.BD_PORT ? parseInt(process.env.BD_PORT, 10) : 3306;
 function createDatabaseIfNotExists() {
     return __awaiter(this, void 0, void 0, function* () {
         const connection = yield (0, promise_1.createConnection)({
             host: process.env.DB_HOST,
-            port: port,
+            port,
             user: process.env.DB_USER,
             password: process.env.DB_PASSWORD
         });
-        yield connection.query(`CREATE DATABASE IF NOT EXIST ${process.env.DB_DATABASE}`);
+        yield connection.query(`CREATE DATABASE IF NOT EXISTS ${process.env.DB_NAME}`);
         connection.end();
     });
 }
 exports.AppDataSource = new typeorm_1.DataSource({
     type: "mysql",
     host: process.env.DB_HOST,
-    port: port,
+    port,
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
-    entities: [ProfesorModel_1.ProfesorModel, EstudianteModel_1.EstudianteModel, CursoModel_1.CursoModel],
-    synchronize: true,
+    database: process.env.DB_NAME,
+    entities: [ProfesorModel_1.ProfesorModel, EstudianteModel_1.EstudianteModel, CursoModel_1.CursoModel, CursosEstudiantesModel_1.CursosEstudiantesModel],
+    synchronize: false,
     logging: true
 });
-function initializeDataBase() {
+function intializeDatabase() {
     return __awaiter(this, void 0, void 0, function* () {
         yield createDatabaseIfNotExists();
         yield exports.AppDataSource.initialize();
     });
 }
-/*import { DataSource } from "typeorm";
-import { createConnection } from "mysql2/promise";
-import {EstudianteModel} from "../models/EstudianteModel";
-import {CursoModel} from "../models/CursoModel";
-import { ProfesorModel } from "../models/ProfesorModel";
-import { CursoEstudianteModel } from "../models/CursoEstudianteModel";
-
-async function createDatabaseIfNotExists(){
-    const connection = await createConnection({
-        host:"localhost",
-        port:3306,
-        user:"root",
-        password:"",
-    });
-
-    await connection.query(`CREATE DATABASE IF NOT EXISTS universidad_marce`);
-    await connection.end();
-}
-
-export const AppDataSource = new DataSource({
-type:"mysql",
-host:"localhost",
-username:"root",
-password:"",
-database:"universidad_marce",
-entities:[EstudianteModel, CursoModel, ProfesorModel, CursoEstudianteModel],
-synchronize: false, //lo puse en falso porque sino me crea la bd de nuevo
-logging:true
-});
-
-export async function inicializeDatabase(){
-    await createDatabaseIfNotExists();
-    await AppDataSource.initialize();
-}*/ 
