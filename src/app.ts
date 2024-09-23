@@ -9,10 +9,8 @@ import methodOverride from 'method-override';
 
 const app=express();
 
-//habilitamos pug
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '/views'));
-//carpeta pblica
 app.use(express.static('public'));
 
 app.use(methodOverride('_method'));
@@ -27,6 +25,7 @@ app.get('/',(req:Request,res:Response)=>{
         pagina: 'App Univerdsidad',
     });
 });
+
 app.use('/estudiantes', estudianteRoutes);
 
 export default app;

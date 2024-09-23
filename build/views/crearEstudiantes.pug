@@ -21,14 +21,22 @@ block contenido
                     
                     div
                         label.block.text-sm.uppercase.text-gray-500.mb-3.font-bold(for="nombre") Nombre 
-                        input#dni.w-full.px-3.py-2.obrder-gray-500.rounded-md.plceholder-gray-400(placeholder="Nombre" type="text" name="nombredni" value=estudiante? estudiante.nombre :'')
+                        input#nombre.w-full.px-3.py-2.obrder-gray-500.rounded-md.plceholder-gray-400(placeholder="Nombre" type="text" name="nombre" value=estudiante? estudiante.nombre :'')
                     
                     div
                         label.block.text-sm.uppercase.text-gray-500.mb-3.font-bold(for="apellido") Apellido 
-                        input#dni.w-full.px-3.py-2.obrder-gray-500.rounded-md.plceholder-gray-400(placeholder="Apellido" type="text" name="apellido" value=estudiante? estudiante.apellido :'')
+                        input#apellido.w-full.px-3.py-2.obrder-gray-500.rounded-md.plceholder-gray-400(placeholder="Apellido" type="text" name="apellido" value=estudiante? estudiante.apellido :'')
                     
                     div
                         label.block.text-sm.uppercase.text-gray-500.mb-3.font-bold(for="email") Email 
-                        input#dni.w-full.px-3.py-2.obrder-gray-500.rounded-md.plceholder-gray-400(placeholder="E    mail" type="text" name="email" value=estudiante? estudiante.email :'')
+                        input#email.w-full.px-3.py-2.obrder-gray-500.rounded-md.plceholder-gray-400(placeholder="Email" type="text" name="email" value=estudiante? estudiante.email :'')
+                    
+                    div
+                        label.block.text-sm.uppercase.text-gray-500.mb-3.font-bold(for="profesion") Profesion 
+                        input#profesion.w-full.px-3.py-2.obrder-gray-500.rounded-md.plceholder-gray-400(placeholder="Profesion" type="text" name="profesion" value=estudiante? estudiante.profesion :'')
+                    
+                    div
+                        label.block.text-sm.uppercase.text-gray-500.mb-3.font-bold(for="telefono") Telefono 
+                        input#telefono.w-full.px-3.py-2.obrder-gray-500.rounded-md.plceholder-gray-400(placeholder="Telefono" type="text" name="telefono" value=estudiante? estudiante.telefono :'')
                     
                     input(class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 cursor-pointer" type="submit" value="Registrar Estudiante")

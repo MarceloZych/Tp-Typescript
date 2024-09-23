@@ -51,5 +51,5 @@ __decorate([
     __metadata("design:type", EstudianteModel_1.EstudianteModel)
 ], CursoModel.prototype, "estudiante", void 0);
 exports.CursoModel = CursoModel = __decorate([
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)('curso')
 ], CursoModel);

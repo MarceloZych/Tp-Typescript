@@ -19,7 +19,10 @@ class EstudianteController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const todosEstudiantes = yield estudianteRepository.find();
-                res.json(todosEstudiantes);
+                if (!Array.isArray(todosEstudiantes)) {
+                    return res.render('listarEstudiante', { estudiantes: [], pagina: 'Listar Estudiantes' });
+                }
+                res.render('listarEstudiantes', { estudiantes: todosEstudiantes, pagina: 'Listar Estudiantes' });
             }
             catch (err) {
                 if (err instanceof Error) {
@@ -33,7 +36,7 @@ class EstudianteController {
             try {
                 const estudiante = yield estudianteRepository.findOneBy({ id: parseInt(req.params.id) });
                 if (!estudiante) {
-                    res.status(404).json({ message: "Curso no encontrado" });
+                    res.status(404).json({ message: "Estudiante no encontrado" });
                     return null;
                 }
                 else {

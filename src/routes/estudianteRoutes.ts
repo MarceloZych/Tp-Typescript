@@ -3,11 +3,10 @@ import EstudianteController from '../controllers/EstudianteController'
 
 const router = Router()
 
-/*router.get('/listarEstudiantes', async (req, res) => {
+router.get('/listarEstudiantes', async (req, res) => {
     const estudiantes = await EstudianteController.consultarTodos(req, res)
-    res.render('listarEstudiantes', {pagina: 'Listar Estudiante' ,estudiantes })
-})*/
-router.get('/listarEstudiantes', EstudianteController.consultarTodos)
+    res.render('listarEstudiantes', {pagina: 'Listar Estudiantes' ,estudiantes })
+})
 
 router.get('/crearEstudiantes', (req, res) => {
     res.render('crearEstudiantes', {

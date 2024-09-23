@@ -7,15 +7,18 @@ const estudianteRepository = AppDataSource.getRepository(EstudianteModel)
 let estudiantes: EstudianteModel[]
 
 class EstudianteController {
-    constructor() {}
+    constructor() { }
 
-    async consultarTodos(req: Request, res: Response):Promise<void> {
-        try{
+    async consultarTodos(req: Request, res: Response): Promise<void> {
+        try {
             const todosEstudiantes = await estudianteRepository.find()
-            res.json(todosEstudiantes)
-        }catch (err) {
+            if (!Array.isArray(todosEstudiantes)) {
+                return res.render('listarEstudiante', { estudiantes: [], pagina: 'Listar Estudiantes' });
+            }
+            res.render('listarEstudiantes', { estudiantes: todosEstudiantes, pagina: 'Listar Estudiantes' })
+        } catch (err) {
             if (err instanceof Error) {
-                res.status(500).json({message: err.message})
+                res.status(500).json({ message: err.message })
             }
         }
     }
@@ -24,7 +27,7 @@ class EstudianteController {
         try {
             const estudiante = await estudianteRepository.findOneBy({ id: parseInt(req.params.id) })
             if (!estudiante) {
-                res.status(404).json({ message: "Curso no encontrado" })
+                res.status(404).json({ message: "Estudiante no encontrado" })
                 return null
             } else {
                 res.json(estudiante)
@@ -39,23 +42,23 @@ class EstudianteController {
         return null
     }
 
-    async insertar (req: Request, res:Response):Promise<void> {
+    async insertar(req: Request, res: Response): Promise<void> {
         try {
             const estudianteCurso = estudianteRepository.create(req.body)
             const guardarEstudiante = await estudianteRepository.save(estudianteCurso)
             res.json(guardarEstudiante)
         } catch (err) {
             if (err instanceof Error) {
-                res.status(500).json({message: err.message})
+                res.status(500).json({ message: err.message })
             }
         }
     }
 
-    async modificar (req: Request, res: Response):Promise<void> {
+    async modificar(req: Request, res: Response): Promise<void> {
         try {
             const modificarEstudiante = await estudianteRepository.findOneBy({ id: parseInt(req.params.id) })
             if (!modificarEstudiante) {
-                res.status(500).json({ message: "curso no encontrado"})
+                res.status(500).json({ message: "curso no encontrado" })
                 return
             }
             estudianteRepository.merge(modificarEstudiante, req.body)
@@ -63,22 +66,22 @@ class EstudianteController {
             res.json(estudianteResult)
         } catch (err) {
             if (err instanceof Error) {
-                res.status(500).json({message: err.message})
+                res.status(500).json({ message: err.message })
             }
         }
     }
 
-    async eliminar (req: Request, res: Response):Promise<void> {
+    async eliminar(req: Request, res: Response): Promise<void> {
         try {
             const eliminarEstudiante = await estudianteRepository.delete({ id: parseInt(req.params.id) })
             if (eliminarEstudiante.affected === 0) {
                 res.status(404).json({ message: "Curso no encontrado" })
             } else {
-                res.status(200).json({ message: "Curso eliminado correctamente"})
+                res.status(200).json({ message: "Curso eliminado correctamente" })
             }
         } catch (err) {
             if (err instanceof Error) {
-                res.status(500).json({message: err.message})
+                res.status(500).json({ message: err.message })
             }
         }
     }

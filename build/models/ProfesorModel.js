@@ -56,5 +56,5 @@ __decorate([
     __metadata("design:type", Array)
 ], ProfesorModel.prototype, "cursos", void 0);
 exports.ProfesorModel = ProfesorModel = __decorate([
-    (0, typeorm_1.Entity)('Profesores')
+    (0, typeorm_1.Entity)('profesor')
 ], ProfesorModel);

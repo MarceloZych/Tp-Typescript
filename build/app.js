@@ -10,10 +10,8 @@ const path_1 = __importDefault(require("path"));
 const estudianteRoutes_1 = __importDefault(require("./routes/estudianteRoutes"));
 const method_override_1 = __importDefault(require("method-override"));
 const app = (0, express_1.default)();
-//habilitamos pug
 app.set('view engine', 'pug');
 app.set('views', path_1.default.join(__dirname, '/views'));
-//carpeta pblica
 app.use(express_1.default.static('public'));
 app.use((0, method_override_1.default)('_method'));
 app.use(express_1.default.json());

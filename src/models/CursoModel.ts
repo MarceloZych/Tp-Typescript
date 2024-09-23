@@ -3,7 +3,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn,
 import { ProfesorModel } from './ProfesorModel'
 import { EstudianteModel } from './EstudianteModel'
 
-@Entity()
+@Entity('curso')
 export class CursoModel {
     @PrimaryGeneratedColumn()
     id: number  

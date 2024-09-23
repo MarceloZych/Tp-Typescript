@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable } from "typeorm";
 import { CursoModel } from "./CursoModel";
 
-@Entity()
+@Entity('estudiante')
 export class EstudianteModel {
     @PrimaryGeneratedColumn()
     id!: number
