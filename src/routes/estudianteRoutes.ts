@@ -23,7 +23,7 @@ router.get('/modificarEstudiante/:id', async (req, res) => {
             return res.status(404).send('Estudiante no encontrado')
         }
         res.render('modificarEstudiante', {
-            estudiante
+            estudiante, pagina: 'Modificar Estudiante'
         })
     } catch (err: unknown) {
         if (err instanceof Error) {

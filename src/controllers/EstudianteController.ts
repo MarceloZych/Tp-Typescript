@@ -54,21 +54,24 @@ class EstudianteController {
         }
     }
 
-    async modificar(req: Request, res: Response): Promise<void> {
+    async modificar(req: Request, res: Response): Promise<EstudianteModel | null> {
         try {
             const modificarEstudiante = await estudianteRepository.findOneBy({ id: parseInt(req.params.id) })
             if (!modificarEstudiante) {
                 res.status(500).json({ message: "curso no encontrado" })
-                return
+                return null
             }
-            estudianteRepository.merge(modificarEstudiante, req.body)
+            return modificarEstudiante
+            /*estudianteRepository.merge(modificarEstudiante, req.body)
             const estudianteResult = await estudianteRepository.save(modificarEstudiante)
-            res.json(estudianteResult)
+            res.json(estudianteResult)*/
         } catch (err) {
             if (err instanceof Error) {
                 res.status(500).json({ message: err.message })
+                return null
             }
         }
+        return null
     }
 
     async eliminar(req: Request, res: Response): Promise<void> {

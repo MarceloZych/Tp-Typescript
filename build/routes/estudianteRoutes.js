@@ -32,7 +32,7 @@ router.get('/modificarEstudiante/:id', (req, res) => __awaiter(void 0, void 0, v
             return res.status(404).send('Estudiante no encontrado');
         }
         res.render('modificarEstudiante', {
-            estudiante
+            estudiante, pagina: 'Modificar Estudiante'
         });
     }
     catch (err) {
