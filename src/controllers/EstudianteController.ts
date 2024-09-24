@@ -1,21 +1,44 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { AppDataSource } from "../db/db";
 import { EstudianteModel } from "../models/EstudianteModel";
+import { check, validationResult } from "express-validator";
 
 const estudianteRepository = AppDataSource.getRepository(EstudianteModel)
 
 let estudiantes: EstudianteModel[]
 
+export const validar = () => {
+    check('dni')
+            .notEmpty().withMessage('El DNI es obligatorio')
+            .isLength({ min: 7 }).withMessage('El DNI debe tener al menos 7 caracteres'),
+    check('nombre').notEmpty().withMessage('El nombre es obligatorio')
+            .isLength({ min: 3 }).withMessage('El nombre debe tener al menos 3 caracteres'),
+    check('apellido').notEmpty().withMessage('El pellido es obligatorio')
+            .isLength({ min: 3 }).withMessage('El apellido debe tener al menos 3 caracteres')
+    check('email').notEmpty().withMessage('Debe proporcionar un email valido')
+            .isLength({min: 3 }).withMessage('El email es obligatorio'),
+    (req:Request, res:Response, next:NextFunction) => {
+        const errores = validationResult(req)
+        if (!errores.isEmpty()) {
+            return res.render('crearEstudiantes', {
+                pagina: 'Crear Estudiante',
+                errores: errores.array()
+            })
+        }
+        next()
+    }
+}
+
 class EstudianteController {
     constructor() { }
 
-    async consultarTodos(req: Request, res: Response): Promise<void> {
+    async consultarTodos(req: Request, res: Response) {
         try {
-            const todosEstudiantes = await estudianteRepository.find()
-            if (!Array.isArray(todosEstudiantes)) {
-                return res.render('listarEstudiante', { estudiantes: [], pagina: 'Listar Estudiantes' });
-            }
-            res.render('listarEstudiantes', { estudiantes: todosEstudiantes, pagina: 'Listar Estudiantes' })
+            estudiantes = await estudianteRepository.find()
+            res.render('listarEstudiantes', {
+                pagina: 'Listar Estudiantes',
+                estudiantes
+            })
         } catch (err) {
             if (err instanceof Error) {
                 res.status(500).json({ message: err.message })
@@ -24,25 +47,30 @@ class EstudianteController {
     }
 
     async consultarUno(req: Request, res: Response): Promise<EstudianteModel | null> {
+        const { id } = req.params
+        const idNumber = Number(id)
+        if (isNaN(idNumber)) {
+            throw new Error('ID inválido, debe ser un número');
+        }
         try {
-            const estudiante = await estudianteRepository.findOneBy({ id: parseInt(req.params.id) })
-            if (!estudiante) {
-                res.status(404).json({ message: "Estudiante no encontrado" })
-                return null
-            } else {
-                res.json(estudiante)
+            const estudiante = await estudianteRepository.findOne({ where: { id: idNumber} })
+            if (estudiante) {
                 return estudiante
+            } else {
+                return null
             }
         } catch (err) {
             if (err instanceof Error) {
-                res.status(500).json({ message: err.message })
-                return null
+                throw err; 
+            } else {
+                throw new Error('Error desconocido');
             }
         }
         return null
     }
 
     async insertar(req: Request, res: Response): Promise<void> {
+        
         try {
             const estudianteCurso = estudianteRepository.create(req.body)
             const guardarEstudiante = await estudianteRepository.save(estudianteCurso)

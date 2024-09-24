@@ -9,20 +9,44 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.validar = void 0;
 const db_1 = require("../db/db");
 const EstudianteModel_1 = require("../models/EstudianteModel");
+const express_validator_1 = require("express-validator");
 const estudianteRepository = db_1.AppDataSource.getRepository(EstudianteModel_1.EstudianteModel);
 let estudiantes;
+const validar = () => {
+    (0, express_validator_1.check)('dni')
+        .notEmpty().withMessage('El DNI es obligatorio')
+        .isLength({ min: 7 }).withMessage('El DNI debe tener al menos 7 caracteres'),
+        (0, express_validator_1.check)('nombre').notEmpty().withMessage('El nombre es obligatorio')
+            .isLength({ min: 3 }).withMessage('El nombre debe tener al menos 3 caracteres'),
+        (0, express_validator_1.check)('apellido').notEmpty().withMessage('El pellido es obligatorio')
+            .isLength({ min: 3 }).withMessage('El apellido debe tener al menos 3 caracteres');
+    (0, express_validator_1.check)('email').notEmpty().withMessage('Debe proporcionar un email valido')
+        .isLength({ min: 3 }).withMessage('El email es obligatorio'),
+        (req, res, next) => {
+            const errores = (0, express_validator_1.validationResult)(req);
+            if (!errores.isEmpty()) {
+                return res.render('crearEstudiantes', {
+                    pagina: 'Crear Estudiante',
+                    errores: errores.array()
+                });
+            }
+            next();
+        };
+};
+exports.validar = validar;
 class EstudianteController {
     constructor() { }
     consultarTodos(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const todosEstudiantes = yield estudianteRepository.find();
-                if (!Array.isArray(todosEstudiantes)) {
-                    return res.render('listarEstudiante', { estudiantes: [], pagina: 'Listar Estudiantes' });
-                }
-                res.render('listarEstudiantes', { estudiantes: todosEstudiantes, pagina: 'Listar Estudiantes' });
+                estudiantes = yield estudianteRepository.find();
+                res.render('listarEstudiantes', {
+                    pagina: 'Listar Estudiantes',
+                    estudiantes
+                });
             }
             catch (err) {
                 if (err instanceof Error) {
@@ -33,21 +57,26 @@ class EstudianteController {
     }
     consultarUno(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params;
+            const idNumber = Number(id);
+            if (isNaN(idNumber)) {
+                throw new Error('ID inválido, debe ser un número');
+            }
             try {
-                const estudiante = yield estudianteRepository.findOneBy({ id: parseInt(req.params.id) });
-                if (!estudiante) {
-                    res.status(404).json({ message: "Estudiante no encontrado" });
-                    return null;
+                const estudiante = yield estudianteRepository.findOne({ where: { id: idNumber } });
+                if (estudiante) {
+                    return estudiante;
                 }
                 else {
-                    res.json(estudiante);
-                    return estudiante;
+                    return null;
                 }
             }
             catch (err) {
                 if (err instanceof Error) {
-                    res.status(500).json({ message: err.message });
-                    return null;
+                    throw err;
+                }
+                else {
+                    throw new Error('Error desconocido');
                 }
             }
             return null;
