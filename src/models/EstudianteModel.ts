@@ -36,5 +36,5 @@ export class EstudianteModel {
         joinColumn: { name: 'estudiante_id', referencedColumnName: 'id' },
         inverseJoinColumn: { name: 'curso_id' , referencedColumnName: 'id'}
     })
-    curso: CursoModel[]
+    cursos: CursoModel[]
 }

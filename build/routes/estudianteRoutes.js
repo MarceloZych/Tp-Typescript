@@ -28,9 +28,9 @@ router.post('/', EstudianteController_1.default.insertar);
 router.get('/modificarEstudiante/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const estudiante = yield EstudianteController_1.default.consultarUno(req, res);
-        if (!estudiante) {
-            return res.status(404).send('Estudiante no encontrado');
-        }
+        /*if (!estudiante) {
+            return res.status(404).send('Estudiante no encontrado')
+        }*/
         res.render('modificarEstudiante', {
             estudiante, pagina: 'Modificar Estudiante'
         });

@@ -33,12 +33,12 @@ __decorate([
     __metadata("design:type", Date)
 ], CursosEstudiantesModel.prototype, "fecha", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => EstudianteModel_1.EstudianteModel, (estudiante) => estudiante.curso),
+    (0, typeorm_1.ManyToOne)(() => EstudianteModel_1.EstudianteModel, (estudiante) => estudiante.cursos),
     (0, typeorm_1.JoinColumn)({ name: 'estudiante_id' }),
     __metadata("design:type", EstudianteModel_1.EstudianteModel)
 ], CursosEstudiantesModel.prototype, "estudiante", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => CursoModel_1.CursoModel, (curso) => curso.estudiante),
+    (0, typeorm_1.ManyToOne)(() => CursoModel_1.CursoModel, (curso) => curso.estudiantes),
     (0, typeorm_1.JoinColumn)({ name: 'curso_id' }),
     __metadata("design:type", CursoModel_1.CursoModel)
 ], CursosEstudiantesModel.prototype, "curso", void 0);

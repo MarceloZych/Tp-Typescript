@@ -11,16 +11,16 @@ export class CursosEstudiantesModel {
     public curso_id: number
 
     @Column({ type: 'float' })
-    public nota: number
+    public nota?: number
 
     @Column({ type: 'date' })
-    public fecha: Date
+    public fecha?: Date
 
-    @ManyToOne(()=> EstudianteModel, (estudiante)=> estudiante.curso)
+    @ManyToOne(()=> EstudianteModel, (estudiante)=> estudiante.cursos)
     @JoinColumn({ name: 'estudiante_id' })
     public estudiante: EstudianteModel
 
-    @ManyToOne(()=> CursoModel, (curso)=> curso.estudiante)
+    @ManyToOne(()=> CursoModel, (curso)=> curso.estudiantes)
     @JoinColumn({ name: 'curso_id' })
-    public curso: CursoModel
+    public curso!: CursoModel
 }

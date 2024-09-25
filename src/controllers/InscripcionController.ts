@@ -46,17 +46,16 @@ class InscripcionController {
         }
     }
 
-    async modificar (req: Request, res: Response):Promise<void> {
+    async modificar (req: Request, res: Response) {
         const { estudiante_id, curso_id } = req.params
         try {
             const modificarInscripcion = await inscripcionRepository.findOneBy({ estudiante_id: parseInt(estudiante_id), curso_id: parseInt(curso_id) })
             if (!modificarInscripcion) {
-                res.status(500).json({ message: "curso no encontrado"})
-                return
+                return res.status(500).json({ message: "curso no encontrado"})
             }
             inscripcionRepository.merge(modificarInscripcion, req.body)
             const inscripcionResult = await inscripcionRepository.save(modificarInscripcion)
-            res.json(modificarInscripcion)
+            return res.json(inscripcionResult)
         } catch (err) {
             if (err instanceof Error) {
                 res.status(500).json({message: err.message})

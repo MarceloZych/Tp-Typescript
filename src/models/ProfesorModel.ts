@@ -32,5 +32,5 @@ export class ProfesorModel {
     updateAt: Date
 
     @OneToMany(()=> CursoModel, (curso)=> curso.profesor)
-    cursos: CursoModel[]
+    cursos!: CursoModel[]
 }

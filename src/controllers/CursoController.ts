@@ -37,7 +37,7 @@ class CursoController {
         try {
             const crearCurso = cursoRepository.create(req.body)
             const guardarCurso = await cursoRepository.save(crearCurso)
-            res.json(guardarCurso)
+            res.status(201).json(guardarCurso)
         } catch (err) {
             if (err instanceof Error) {
                 res.status(500).json({message: err.message})
@@ -49,12 +49,12 @@ class CursoController {
         try {
             const modificarCurso = await cursoRepository.findOneBy({ id: parseInt(req.params.id) })
             if (!modificarCurso) {
-                res.status(500).json({ message: "curso no encontrado"})
+                res.status(404).json({ message: "curso no encontrado"})
                 return
             }
             cursoRepository.merge(modificarCurso, req.body)
             const cursoResult = await cursoRepository.save(modificarCurso)
-            res.json(modificarCurso)
+            res.json(cursoResult)
         } catch (err) {
             if (err instanceof Error) {
                 res.status(500).json({message: err.message})

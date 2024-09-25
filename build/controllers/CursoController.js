@@ -50,7 +50,7 @@ class CursoController {
             try {
                 const crearCurso = cursoRepository.create(req.body);
                 const guardarCurso = yield cursoRepository.save(crearCurso);
-                res.json(guardarCurso);
+                res.status(201).json(guardarCurso);
             }
             catch (err) {
                 if (err instanceof Error) {
@@ -64,12 +64,12 @@ class CursoController {
             try {
                 const modificarCurso = yield cursoRepository.findOneBy({ id: parseInt(req.params.id) });
                 if (!modificarCurso) {
-                    res.status(500).json({ message: "curso no encontrado" });
+                    res.status(404).json({ message: "curso no encontrado" });
                     return;
                 }
                 cursoRepository.merge(modificarCurso, req.body);
                 const cursoResult = yield cursoRepository.save(modificarCurso);
-                res.json(modificarCurso);
+                res.json(cursoResult);
             }
             catch (err) {
                 if (err instanceof Error) {

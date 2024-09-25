@@ -21,7 +21,7 @@ export class CursoModel {
     updateAt: Date
 
     @ManyToOne(()=> ProfesorModel, profesor => profesor.cursos)
-    @JoinColumn({name:'Profesores_id'})
+    @JoinColumn({name:'profesor_id'})
     profesor: ProfesorModel
 
     @ManyToMany(()=> EstudianteModel)
@@ -30,5 +30,5 @@ export class CursoModel {
         joinColumn: { name: 'curso_id', referencedColumnName: 'id' },
         inverseJoinColumn: { name: 'estudiante_id', referencedColumnName: 'id' }
     })
-    estudiante: EstudianteModel
+    estudiantes: EstudianteModel[]
 }

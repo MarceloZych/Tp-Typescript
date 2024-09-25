@@ -38,7 +38,7 @@ __decorate([
 ], CursoModel.prototype, "updateAt", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => ProfesorModel_1.ProfesorModel, profesor => profesor.cursos),
-    (0, typeorm_1.JoinColumn)({ name: 'Profesores_id' }),
+    (0, typeorm_1.JoinColumn)({ name: 'profesor_id' }),
     __metadata("design:type", ProfesorModel_1.ProfesorModel)
 ], CursoModel.prototype, "profesor", void 0);
 __decorate([
@@ -48,8 +48,8 @@ __decorate([
         joinColumn: { name: 'curso_id', referencedColumnName: 'id' },
         inverseJoinColumn: { name: 'estudiante_id', referencedColumnName: 'id' }
     }),
-    __metadata("design:type", EstudianteModel_1.EstudianteModel)
-], CursoModel.prototype, "estudiante", void 0);
+    __metadata("design:type", Array)
+], CursoModel.prototype, "estudiantes", void 0);
 exports.CursoModel = CursoModel = __decorate([
     (0, typeorm_1.Entity)('curso')
 ], CursoModel);

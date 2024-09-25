@@ -19,9 +19,9 @@ router.post('/', EstudianteController.insertar)
 router.get('/modificarEstudiante/:id', async (req, res) => {
     try {
         const estudiante = await EstudianteController.consultarUno(req, res)
-        if (!estudiante) {
+        /*if (!estudiante) {
             return res.status(404).send('Estudiante no encontrado')
-        }
+        }*/
         res.render('modificarEstudiante', {
             estudiante, pagina: 'Modificar Estudiante'
         })

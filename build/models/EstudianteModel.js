@@ -59,7 +59,7 @@ __decorate([
         inverseJoinColumn: { name: 'curso_id', referencedColumnName: 'id' }
     }),
     __metadata("design:type", Array)
-], EstudianteModel.prototype, "curso", void 0);
+], EstudianteModel.prototype, "cursos", void 0);
 exports.EstudianteModel = EstudianteModel = __decorate([
     (0, typeorm_1.Entity)('estudiante')
 ], EstudianteModel);
