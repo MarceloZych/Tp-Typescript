@@ -9,24 +9,24 @@ let estudiantes: EstudianteModel[]
 
 export const validar = () => {
     check('dni')
-            .notEmpty().withMessage('El DNI es obligatorio')
-            .isLength({ min: 7 }).withMessage('El DNI debe tener al menos 7 caracteres'),
-    check('nombre').notEmpty().withMessage('El nombre es obligatorio')
+        .notEmpty().withMessage('El DNI es obligatorio')
+        .isLength({ min: 7 }).withMessage('El DNI debe tener al menos 7 caracteres'),
+        check('nombre').notEmpty().withMessage('El nombre es obligatorio')
             .isLength({ min: 3 }).withMessage('El nombre debe tener al menos 3 caracteres'),
-    check('apellido').notEmpty().withMessage('El pellido es obligatorio')
+        check('apellido').notEmpty().withMessage('El pellido es obligatorio')
             .isLength({ min: 3 }).withMessage('El apellido debe tener al menos 3 caracteres')
     check('email').notEmpty().withMessage('Debe proporcionar un email valido')
-            .isLength({min: 3 }).withMessage('El email es obligatorio'),
-    (req:Request, res:Response, next:NextFunction) => {
-        const errores = validationResult(req)
-        if (!errores.isEmpty()) {
-            return res.render('crearEstudiantes', {
-                pagina: 'Crear Estudiante',
-                errores: errores.array()
-            })
+        .isLength({ min: 3 }).withMessage('El email es obligatorio'),
+        (req: Request, res: Response, next: NextFunction) => {
+            const errores = validationResult(req)
+            if (!errores.isEmpty()) {
+                return res.render('crearEstudiantes', {
+                    pagina: 'Crear Estudiante',
+                    errores: errores.array()
+                })
+            }
+            next()
         }
-        next()
-    }
 }
 
 class EstudianteController {
@@ -53,24 +53,25 @@ class EstudianteController {
             throw new Error('ID inválido, debe ser un número');
         }
         try {
-            const estudiante = await estudianteRepository.findOne({ where: { id: idNumber} })
+            const estudiante = await estudianteRepository.findOne({ where: { id: idNumber } })
+
             if (estudiante) {
                 return estudiante
             } else {
                 return null
             }
+
         } catch (err) {
             if (err instanceof Error) {
-                throw err; 
+                throw err;
             } else {
                 throw new Error('Error desconocido');
             }
         }
-        return null
     }
 
     async insertar(req: Request, res: Response): Promise<void> {
-        
+
         try {
             const estudianteCurso = estudianteRepository.create(req.body)
             const guardarEstudiante = await estudianteRepository.save(estudianteCurso)

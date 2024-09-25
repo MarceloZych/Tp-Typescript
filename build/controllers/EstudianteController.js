@@ -79,7 +79,6 @@ class EstudianteController {
                     throw new Error('Error desconocido');
                 }
             }
-            return null;
         });
     }
     insertar(req, res) {
