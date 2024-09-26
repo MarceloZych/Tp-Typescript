@@ -6,7 +6,7 @@ import { EstudianteModel } from './EstudianteModel'
 @Entity('curso')
 export class CursoModel {
     @PrimaryGeneratedColumn()
-    id: number  
+    id: number
 
     @Column()
     nombre: string
