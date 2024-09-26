@@ -10,6 +10,7 @@ const path_1 = __importDefault(require("path"));
 const estudianteRoutes_1 = __importDefault(require("./routes/estudianteRoutes"));
 const method_override_1 = __importDefault(require("method-override"));
 const profesoresRoutes_1 = __importDefault(require("./routes/profesoresRoutes"));
+const cursosRoutes_1 = __importDefault(require("./routes/cursosRoutes"));
 const app = (0, express_1.default)();
 app.set('view engine', 'pug');
 app.set('views', path_1.default.join(__dirname, '/views'));
@@ -26,4 +27,5 @@ app.get('/', (req, res) => {
 });
 app.use('/estudiantes', estudianteRoutes_1.default);
 app.use('/profesores', profesoresRoutes_1.default);
+app.use('/cursos', cursosRoutes_1.default);
 exports.default = app;

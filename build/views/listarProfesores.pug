@@ -18,7 +18,7 @@ block contenido
                     th.text-left.text-gray-500.uppercase.px-6.py-3 Nombre
                     th.text-left.text-gray-500.uppercase.px-6.py-3 Apellido
                     th.text-left.text-gray-500.uppercase.px-6.py-3 Email
-                    th.text-left.text-gray-500.uppercase.px-6.py-3 Profesion
+                    th.text-left.text-gray-500.uppercase.px-6.py-3 Materia
                     th.text-left.text-gray-500.uppercase.px-6.py-3 Telefono
                     th.text-left.text-gray-500.uppercase.px-6.py-3 Acciones
             tbody
@@ -28,7 +28,7 @@ block contenido
                         td.px-6.py-4= profesor.nombre
                         td.px-6.py-4= profesor.apellido
                         td.px-6.py-4= profesor.email
-                        td.px-6.py-4= profesor.profesion
+                        td.px-6.py-4= profesor.materia
                         td.px-6.py-4= profesor.telefono
                         td.px-6.py-4
                             a.text-blue-500(href=`/profesores/modificarProfesor/${profesor.id}`) Editar

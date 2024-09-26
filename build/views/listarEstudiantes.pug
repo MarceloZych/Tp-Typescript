@@ -18,7 +18,6 @@ block contenido
                     th.text-left.text-gray-500.uppercase.px-6.py-3 Nombre
                     th.text-left.text-gray-500.uppercase.px-6.py-3 Apellido
                     th.text-left.text-gray-500.uppercase.px-6.py-3 Email
-                    th.text-left.text-gray-500.uppercase.px-6.py-3 Profesion
                     th.text-left.text-gray-500.uppercase.px-6.py-3 Telefono
                     th.text-left.text-gray-500.uppercase.px-6.py-3 Acciones
             tbody
@@ -28,7 +27,6 @@ block contenido
                         td.px-6.py-4= estudiante.nombre
                         td.px-6.py-4= estudiante.apellido
                         td.px-6.py-4= estudiante.email
-                        td.px-6.py-4= estudiante.profesion
                         td.px-6.py-4= estudiante.telefono
                         td.px-6.py-4
                             a.text-blue-500(href=`/estudiantes/modificarEstudiante/${estudiante.id}`) Editar

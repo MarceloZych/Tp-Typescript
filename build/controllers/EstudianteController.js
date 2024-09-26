@@ -76,6 +76,7 @@ class EstudianteController {
                 const nuevoEstudiante = estudianteRepository.create(req.body);
                 const guardarEstudiante = yield estudianteRepository.save(nuevoEstudiante);
                 res.status(201).json(guardarEstudiante);
+                return res.redirect('/estudiantes/listarEstudiantes');
             }
             catch (err) {
                 if (err instanceof Error) {

@@ -38,7 +38,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], ProfesorModel.prototype, "profesion", void 0);
+], ProfesorModel.prototype, "materia", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)

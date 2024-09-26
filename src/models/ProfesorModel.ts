@@ -20,7 +20,7 @@ export class ProfesorModel {
     email: string
 
     @Column()
-    profesion: string
+    materia: string
 
     @Column()
     telefono: string

@@ -19,9 +19,6 @@ export class EstudianteModel {
     email: string
 
     @Column()
-    profesion: string
-
-    @Column()
     telefono: string   
     
     @CreateDateColumn()

@@ -121,7 +121,7 @@ class ProfesorController {
                     res.status(404).json({ message: 'Profesor no encontrado' });
                     return;
                 }
-                res.json({ message: 'Profesor eliminado correctamente' });
+                res.status(200).json({ message: 'Profesor eliminado correctamente' });
             }
             catch (err) {
                 if (err instanceof Error) {

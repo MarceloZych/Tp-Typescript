@@ -1,10 +1,12 @@
 import { Router } from "express"
 import CursoController from "../controllers/CursoController"
+
 const routes = Router()
 
-routes.get('/', CursoController.consultarTodos)
-
-routes.post('/', CursoController.insertar)
+routes.get('/listarCursos', CursoController.consultarTodos)
+//routes.get('/crear', CursoController.mostrarCrearCurso);
+        
+routes.post('/crearCursos', CursoController.insertar)
 
 routes.route('/:id')
         .get(CursoController.consultarUno)

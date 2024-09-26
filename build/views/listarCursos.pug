@@ -4,7 +4,7 @@ block contenido
     .flex.justify-end.mb-4
         ul.flex.space-x-4
             li
-                a(href="/cursos/crearCrusos" class="text-green-600 hover:text-green-800") Agregar Estudiante
+                a(href="/cursos/crearCrusos" class="text-green-600 hover:text-green-800") Agregar Curso
     
     .py-10
         h1.text-4xl.my-10.font-extrabold.text-center Proyecto
@@ -17,13 +17,20 @@ block contenido
                     th.text-left.text-gray-500.uppercase.px-6.py-3 Nombre
                     th.text-left.text-gray-500.uppercase.px-6.py-3 descripcion
                     th.text-left.text-gray-500.uppercase.px-6.py-3 profesor
+                    th.text-left.text-gray-500.uppercase.px-6.py-3 Estudiantes Inscriptos
             tbody
                 each cursos in listaCursos || []
                     tr
                         td.px-6.py-4= cursos.nombre
                         td.px-6.py-4= cursos.descripcion
-                        td.px-6.py-4= cursos.profesor
+                        td.px-6.py-4= cursos.profesor ? cursos.profesor.nombre : 'Sin Profesor'
                         td.px-6.py-4
+                            if cursos.estudiantes.length > 0
+                                each estudiante in cursos.estudiantes || []
+                                    p= estudiante.nombre
+                            else
+                                p No hay estudiantes inscritos.
+                        td.px--6.py--4
                             a.text-blue-500(href=`/cursos/modificarCurso/${cursos.id}`) Editar
                             a.text-red-500.ml-2(href="#", onclick=`eliminarCruso('${cursos.id}')`) Eliminar
 
