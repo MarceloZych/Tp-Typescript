@@ -34,7 +34,7 @@ export const AppDataSource = new DataSource({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     entities: [ProfesorModel, EstudianteModel, CursoModel, CursosEstudiantesModel],
-    synchronize: true,
+    synchronize: false,
     logging: true
 });
 

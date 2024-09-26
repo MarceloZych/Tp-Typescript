@@ -6,6 +6,7 @@ import path from "path";
 import estudianteRoutes from'./routes/estudianteRoutes';
 
 import methodOverride from 'method-override';
+import profesoresRoutes from "./routes/profesoresRoutes";
 
 const app=express();
 
@@ -27,5 +28,6 @@ app.get('/',(req:Request,res:Response)=>{
 });
 
 app.use('/estudiantes', estudianteRoutes);
+app.use('/profesores', profesoresRoutes)
 
 export default app;

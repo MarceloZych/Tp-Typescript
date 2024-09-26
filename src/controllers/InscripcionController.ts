@@ -5,79 +5,115 @@ import { CursosEstudiantesModel } from "../models/CursosEstudiantesModel";
 const inscripcionRepository = AppDataSource.getRepository(CursosEstudiantesModel)
 
 class InscripcionController {
-    constructor() {}
 
-    async consultarTodos(req: Request, res: Response):Promise<void> {
-        try{
-            const inscripcion = await inscripcionRepository.find()
-            res.json(inscripcion)
-        }catch (err) {
+    constructor() { }
+
+    async consultarTodos(req: Request, res: Response): Promise<void> {
+        try {
+            const inscripciones = await inscripcionRepository.find();
+            res.json(inscripciones);
+        } catch (err) {
             if (err instanceof Error) {
-                res.status(500).json({message: err.message})
+                res.status(500).json({ message: err.message });
             }
         }
     }
 
-    async consultarUno (req: Request, res: Response):Promise<void> {
-        const { estudiante_id, curso_id } = req.params
-        try{
-            const inscripcion = await inscripcionRepository.findOneBy({ estudiante_id: parseInt(estudiante_id), curso_id: parseInt(curso_id) })
+    async consultarUno(req: Request, res: Response): Promise<void> {
+        const { estudiante_id, curso_id } = req.params;
+        try {
+            const inscripcion = await inscripcionRepository.findOneBy({
+                estudiante_id: parseInt(estudiante_id),
+                curso_id: parseInt(curso_id)
+            });
+
             if (!inscripcion) {
-                res.status(404).json({ message: "Inscripcion no encontrado"})
-            } else {
-                res.json(inscripcion)
+                res.status(404).json({ message: "Inscripción no encontrada" });
+                return 
             }
+
+            res.json(inscripcion);
+
         } catch (err) {
             if (err instanceof Error) {
-                res.status(500).json({message: err.message})
+                res.status(500).json({ message: err.message });
+                return 
             }
         }
     }
 
-    async insertar (req: Request, res:Response):Promise<void> {
+    async insertar(req: Request, res: Response): Promise<void> {
+
         try {
-            const crearInscripcion = inscripcionRepository.create(req.body)
-            const guardarInscripcion = await inscripcionRepository.save(crearInscripcion)
-            res.json(guardarInscripcion)
+            const crearInscripcion = inscripcionRepository.create(req.body);
+            const guardarInscripcion = await inscripcionRepository.save(crearInscripcion);
+            res.status(201).json(guardarInscripcion); // Cambiar a 201 para creación exitosa
         } catch (err) {
             if (err instanceof Error) {
-                res.status(500).json({message: err.message})
+                res.status(500).json({ message: err.message });
+                return 
             }
         }
     }
 
-    async modificar (req: Request, res: Response) {
-        const { estudiante_id, curso_id } = req.params
+    async modificar(req: Request, res: Response): Promise<void> {
+
+        const { estudiante_id, curso_id } = req.params;
+
         try {
-            const modificarInscripcion = await inscripcionRepository.findOneBy({ estudiante_id: parseInt(estudiante_id), curso_id: parseInt(curso_id) })
+            const modificarInscripcion = await inscripcionRepository.findOneBy({
+                estudiante_id: parseInt(estudiante_id),
+                curso_id: parseInt(curso_id)
+            });
+
             if (!modificarInscripcion) {
-                return res.status(500).json({ message: "curso no encontrado"})
+                res.status(404).json({ message: "Inscripción no encontrada" });
+                return 
             }
-            inscripcionRepository.merge(modificarInscripcion, req.body)
-            const inscripcionResult = await inscripcionRepository.save(modificarInscripcion)
-            return res.json(inscripcionResult)
+
+            inscripcionRepository.merge(modificarInscripcion, req.body);
+            const inscripcionResult = await inscripcionRepository.save(modificarInscripcion);
+
+            res.json(inscripcionResult);
+
         } catch (err) {
             if (err instanceof Error) {
-                res.status(500).json({message: err.message})
+                res.status(500).json({ message: err.message });
+                return 
             }
         }
     }
 
-    async eliminar   (req: Request, res: Response):Promise<void> {
-        const { estudiante_id, curso_id } = req.params
+    async eliminar(req: Request, res: Response): Promise<void> {
+
+        const { estudiante_id, curso_id } = req.params;
+
         try {
-            const eliminarInscripcion = await inscripcionRepository.delete({ estudiante_id: parseInt(estudiante_id), curso_id: parseInt(curso_id) })
+            const eliminarInscripcion = await inscripcionRepository.delete({
+                estudiante_id: parseInt(estudiante_id),
+                curso_id: parseInt(curso_id)
+            });
+
             if (eliminarInscripcion.affected === 0) {
-                res.status(404).json({ message: "Curso no encontrado" })
-            } else {
-                res.status(200).json({ message: "Curso eliminado correctamente"})
+                res.status(404).json({
+                    message: "Inscripción no encontrada"
+                });
+                return
             }
+
+            res.status(200).json({
+                message: "Inscripción eliminada correctamente"
+            });
+
         } catch (err) {
             if (err instanceof Error) {
-                res.status(500).json({message: err.message})
+                res.status(500).json({
+                    message: err.message
+                })
             }
         }
+
     }
 }
 
-export default new InscripcionController()
+export default new InscripcionController();

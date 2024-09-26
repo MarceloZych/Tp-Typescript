@@ -15,10 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const EstudianteController_1 = __importDefault(require("../controllers/EstudianteController"));
 const router = (0, express_1.Router)();
-router.get('/listarEstudiantes', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const estudiantes = yield EstudianteController_1.default.consultarTodos(req, res);
-    res.render('listarEstudiantes', { pagina: 'Listar Estudiantes', estudiantes });
-}));
+router.get('/listarEstudiantes', EstudianteController_1.default.consultarTodos);
 router.get('/crearEstudiantes', (req, res) => {
     res.render('crearEstudiantes', {
         pagina: 'Crear Estudiante'
@@ -27,13 +24,7 @@ router.get('/crearEstudiantes', (req, res) => {
 router.post('/', EstudianteController_1.default.insertar);
 router.get('/modificarEstudiante/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const estudiante = yield EstudianteController_1.default.consultarUno(req, res);
-        /*if (!estudiante) {
-            return res.status(404).send('Estudiante no encontrado')
-        }*/
-        res.render('modificarEstudiante', {
-            estudiante, pagina: 'Modificar Estudiante'
-        });
+        yield EstudianteController_1.default.consultarUno(req, res);
     }
     catch (err) {
         if (err instanceof Error) {

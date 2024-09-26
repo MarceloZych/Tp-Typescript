@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { AppDataSource } from "../db/db";
 import { EstudianteModel } from "../models/EstudianteModel";
 import { check, validationResult } from "express-validator";
@@ -35,16 +35,19 @@ class EstudianteController {
     async consultarUno(req: Request, res: Response): Promise<void> {
         const { id } = req.params;
         const idNumber = Number(id);
+        
         if (isNaN(idNumber)) {
             res.status(400).json({ message: 'ID inválido, debe ser un número' });
+            return;
         }
+
         try {
             const estudiante = await estudianteRepository.findOne({ where: { id: idNumber } });
             if (!estudiante) {
-                res.status(404).json({ message: "Estudiante no encontrado" })
+                res.status(404).json({ message: "Estudiante no encontrado" });
+                return;
             }
-
-            res.json(estudiante);
+            res.render('modificarEstudiante', {estudiante, pagina: 'Modificar Estudiante'});
         } catch (err) {
             if (err instanceof Error) {
                 res.status(500).json({ message: err.message });
@@ -52,16 +55,18 @@ class EstudianteController {
         }
     }
 
-    async insertar(req: Request, res: Response): Promise<void> {
-        const errorAlValidar = validationResult(req)
-        if (!errorAlValidar.isEmpty()) {
-            res.status(400).json({ errorAlValidar: errorAlValidar.array() })
+    async insertar(req: Request, res: Response): Promise<void> {        
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.status(400).json({ errors: errors.array() });
+            return;
         }
 
         try {
-            const estudianteCurso = estudianteRepository.create(req.body);
-            const guardarEstudiante = await estudianteRepository.save(estudianteCurso);
-            res.status(201).json(guardarEstudiante)
+            const nuevoEstudiante = estudianteRepository.create(req.body);
+            const guardarEstudiante = await estudianteRepository.save(nuevoEstudiante);
+            res.status(201).json(guardarEstudiante);
+            return res.redirect('/estudiantes/listarEstudiantes');
         } catch (err) {
             if (err instanceof Error) {
                 res.status(500).json({ message: err.message });
@@ -72,21 +77,20 @@ class EstudianteController {
     async modificar(req: Request, res: Response): Promise<void> {
         const { id } = req.params;
         try {
-            const estudiante = await estudianteRepository.findOne({ where: { id: parseInt(id) } })
+            const estudiante = await estudianteRepository.findOne({ where: { id: parseInt(id) } });
 
             if (!estudiante) {
-                res.status(404).send('Estudiante no encontrado')
-                return
+                res.status(404).send('Estudiante no encontrado');
+                return 
             }
 
-            estudianteRepository.merge(estudiante, req.body)
-
-            await estudianteRepository.save(estudiante)
-            
-            res.redirect('/estudiantes/listarEstudiantes')
-        } catch (error) {
-            console.error('Error al modificar el estudiante:', error)
-            res.status(500).send('Error del servidor')
+            estudianteRepository.merge(estudiante, req.body);
+            await estudianteRepository.save(estudiante);
+            return res.redirect('/estudiantes/listarEstudiantes');
+        } catch (err) {
+            if (err instanceof Error) {
+                res.sendStatus((500)).send(err.message);
+            }
         }
     }
 
@@ -96,20 +100,20 @@ class EstudianteController {
             await AppDataSource.transaction(async transactionalEntityManager => {
                 const cursosEstudiantesRepository = transactionalEntityManager.getRepository(CursosEstudiantesModel);
                 const estudianteRepository = transactionalEntityManager.getRepository(EstudianteModel);
-    
+
                 const cursosRelacionados = await cursosEstudiantesRepository.count({ where: { estudiante: { id: Number(id) } } });
                 if (cursosRelacionados > 0) {
                     throw new Error('Estudiante cursando materias, no se puede eliminar');
                 }
                 const deleteResult = await estudianteRepository.delete(id);
-    
+
                 if (deleteResult.affected === 1) {
-                    return res.json({ mensaje: 'Estudiante eliminado' }); 
+                    return res.json({ mensaje: 'Estudiante eliminado' });
                 } else {
                     throw new Error('Estudiante no encontrado');
                 }
             });
-        } catch (err: unknown) {
+        } catch (err) {
             if (err instanceof Error) {
                 res.status(400).json({ mensaje: err.message });
             } else {

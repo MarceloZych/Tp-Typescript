@@ -17,8 +17,8 @@ class InscripcionController {
     consultarTodos(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const inscripcion = yield inscripcionRepository.find();
-                res.json(inscripcion);
+                const inscripciones = yield inscripcionRepository.find();
+                res.json(inscripciones);
             }
             catch (err) {
                 if (err instanceof Error) {
@@ -31,17 +31,20 @@ class InscripcionController {
         return __awaiter(this, void 0, void 0, function* () {
             const { estudiante_id, curso_id } = req.params;
             try {
-                const inscripcion = yield inscripcionRepository.findOneBy({ estudiante_id: parseInt(estudiante_id), curso_id: parseInt(curso_id) });
+                const inscripcion = yield inscripcionRepository.findOneBy({
+                    estudiante_id: parseInt(estudiante_id),
+                    curso_id: parseInt(curso_id)
+                });
                 if (!inscripcion) {
-                    res.status(404).json({ message: "Inscripcion no encontrado" });
+                    res.status(404).json({ message: "Inscripción no encontrada" });
+                    return;
                 }
-                else {
-                    res.json(inscripcion);
-                }
+                res.json(inscripcion);
             }
             catch (err) {
                 if (err instanceof Error) {
                     res.status(500).json({ message: err.message });
+                    return;
                 }
             }
         });
@@ -51,11 +54,12 @@ class InscripcionController {
             try {
                 const crearInscripcion = inscripcionRepository.create(req.body);
                 const guardarInscripcion = yield inscripcionRepository.save(crearInscripcion);
-                res.json(guardarInscripcion);
+                res.status(201).json(guardarInscripcion); // Cambiar a 201 para creación exitosa
             }
             catch (err) {
                 if (err instanceof Error) {
                     res.status(500).json({ message: err.message });
+                    return;
                 }
             }
         });
@@ -64,17 +68,22 @@ class InscripcionController {
         return __awaiter(this, void 0, void 0, function* () {
             const { estudiante_id, curso_id } = req.params;
             try {
-                const modificarInscripcion = yield inscripcionRepository.findOneBy({ estudiante_id: parseInt(estudiante_id), curso_id: parseInt(curso_id) });
+                const modificarInscripcion = yield inscripcionRepository.findOneBy({
+                    estudiante_id: parseInt(estudiante_id),
+                    curso_id: parseInt(curso_id)
+                });
                 if (!modificarInscripcion) {
-                    return res.status(500).json({ message: "curso no encontrado" });
+                    res.status(404).json({ message: "Inscripción no encontrada" });
+                    return;
                 }
                 inscripcionRepository.merge(modificarInscripcion, req.body);
                 const inscripcionResult = yield inscripcionRepository.save(modificarInscripcion);
-                return res.json(inscripcionResult);
+                res.json(inscripcionResult);
             }
             catch (err) {
                 if (err instanceof Error) {
                     res.status(500).json({ message: err.message });
+                    return;
                 }
             }
         });
@@ -83,17 +92,25 @@ class InscripcionController {
         return __awaiter(this, void 0, void 0, function* () {
             const { estudiante_id, curso_id } = req.params;
             try {
-                const eliminarInscripcion = yield inscripcionRepository.delete({ estudiante_id: parseInt(estudiante_id), curso_id: parseInt(curso_id) });
+                const eliminarInscripcion = yield inscripcionRepository.delete({
+                    estudiante_id: parseInt(estudiante_id),
+                    curso_id: parseInt(curso_id)
+                });
                 if (eliminarInscripcion.affected === 0) {
-                    res.status(404).json({ message: "Curso no encontrado" });
+                    res.status(404).json({
+                        message: "Inscripción no encontrada"
+                    });
+                    return;
                 }
-                else {
-                    res.status(200).json({ message: "Curso eliminado correctamente" });
-                }
+                res.status(200).json({
+                    message: "Inscripción eliminada correctamente"
+                });
             }
             catch (err) {
                 if (err instanceof Error) {
-                    res.status(500).json({ message: err.message });
+                    res.status(500).json({
+                        message: err.message
+                    });
                 }
             }
         });

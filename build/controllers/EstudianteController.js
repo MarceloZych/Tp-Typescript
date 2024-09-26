@@ -48,13 +48,15 @@ class EstudianteController {
             const idNumber = Number(id);
             if (isNaN(idNumber)) {
                 res.status(400).json({ message: 'ID inválido, debe ser un número' });
+                return;
             }
             try {
                 const estudiante = yield estudianteRepository.findOne({ where: { id: idNumber } });
                 if (!estudiante) {
                     res.status(404).json({ message: "Estudiante no encontrado" });
+                    return;
                 }
-                res.json(estudiante);
+                res.render('modificarEstudiante', { estudiante, pagina: 'Modificar Estudiante' });
             }
             catch (err) {
                 if (err instanceof Error) {
@@ -65,13 +67,14 @@ class EstudianteController {
     }
     insertar(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const errorAlValidar = (0, express_validator_1.validationResult)(req);
-            if (!errorAlValidar.isEmpty()) {
-                res.status(400).json({ errorAlValidar: errorAlValidar.array() });
+            const errors = (0, express_validator_1.validationResult)(req);
+            if (!errors.isEmpty()) {
+                res.status(400).json({ errors: errors.array() });
+                return;
             }
             try {
-                const estudianteCurso = estudianteRepository.create(req.body);
-                const guardarEstudiante = yield estudianteRepository.save(estudianteCurso);
+                const nuevoEstudiante = estudianteRepository.create(req.body);
+                const guardarEstudiante = yield estudianteRepository.save(nuevoEstudiante);
                 res.status(201).json(guardarEstudiante);
             }
             catch (err) {
@@ -92,11 +95,12 @@ class EstudianteController {
                 }
                 estudianteRepository.merge(estudiante, req.body);
                 yield estudianteRepository.save(estudiante);
-                res.redirect('/estudiantes/listarEstudiantes');
+                return res.redirect('/estudiantes/listarEstudiantes');
             }
-            catch (error) {
-                console.error('Error al modificar el estudiante:', error);
-                res.status(500).send('Error del servidor');
+            catch (err) {
+                if (err instanceof Error) {
+                    res.sendStatus((500)).send(err.message);
+                }
             }
         });
     }

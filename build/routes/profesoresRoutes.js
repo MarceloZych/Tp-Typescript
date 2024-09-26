@@ -1,15 +1,37 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const ProfesorController_1 = __importDefault(require("../controllers/ProfesorController"));
-const routes = (0, express_1.Router)();
-routes.get('/', ProfesorController_1.default.consultarTodos);
-routes.post('/', ProfesorController_1.default.insertar);
-routes.route('/:id')
-    .get(ProfesorController_1.default.consultarUno)
-    .put(ProfesorController_1.default.modificar)
-    .delete(ProfesorController_1.default.eliminar);
-exports.default = routes;
+const router = (0, express_1.Router)();
+router.get('/listarProfesores', ProfesorController_1.default.consultarTodos);
+router.get('/crearProfesores', (req, res) => {
+    res.render('crearProfesores', {
+        pagina: 'Crear Estudiante'
+    });
+});
+router.post('/', ProfesorController_1.default.insertar);
+router.get('/modificarProfesor/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield ProfesorController_1.default.consultarUno(req, res);
+    }
+    catch (err) {
+        if (err instanceof Error) {
+            res.status(500).send(err.message);
+        }
+    }
+}));
+router.put('/:id', ProfesorController_1.default.modificar);
+router.delete('/:id', ProfesorController_1.default.eliminar);
+exports.default = router;

@@ -1,14 +1,30 @@
-import { Router } from "express"
-import ProfesorController from "../controllers/ProfesorController"
+import { Router } from "express";
+import ProfesorController from "../controllers/ProfesorController";
 
-const routes = Router()
+const router = Router();
 
-routes.get('/', ProfesorController.consultarTodos)
-routes.post('/', ProfesorController.insertar)
+router.get('/listarProfesores', ProfesorController.consultarTodos);
 
-routes.route('/:id')
-        .get(ProfesorController.consultarUno)
-        .put(ProfesorController.modificar)
-        .delete(ProfesorController.eliminar)
+router.get('/crearProfesores', (req, res) => {
+    res.render('crearProfesores', {
+        pagina: 'Crear Estudiante'
+    })
+})
 
-export default routes
+router.post('/', ProfesorController.insertar);
+
+router.get('/modificarProfesor/:id', async (req, res) => {
+    try {
+        await ProfesorController.consultarUno(req, res)
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            res.status(500).send(err.message)
+        }
+    }
+})
+
+router.put('/:id', ProfesorController.modificar)
+
+router.delete('/:id', ProfesorController.eliminar);
+
+export default router;

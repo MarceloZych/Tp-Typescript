@@ -33,10 +33,9 @@ class CursoController {
                 const curso = yield cursoRepository.findOneBy({ id: parseInt(req.params.id) });
                 if (!curso) {
                     res.status(404).json({ message: "Curso no encontrado" });
+                    return;
                 }
-                else {
-                    res.json(curso);
-                }
+                res.json(curso);
             }
             catch (err) {
                 if (err instanceof Error) {
@@ -64,7 +63,7 @@ class CursoController {
             try {
                 const modificarCurso = yield cursoRepository.findOneBy({ id: parseInt(req.params.id) });
                 if (!modificarCurso) {
-                    res.status(404).json({ message: "curso no encontrado" });
+                    res.status(404).json({ message: "Curso no encontrado" });
                     return;
                 }
                 cursoRepository.merge(modificarCurso, req.body);
@@ -84,10 +83,9 @@ class CursoController {
                 const eliminarCurso = yield cursoRepository.delete({ id: parseInt(req.params.id) });
                 if (eliminarCurso.affected === 0) {
                     res.status(404).json({ message: "Curso no encontrado" });
+                    return;
                 }
-                else {
-                    res.status(200).json({ message: "Curso eliminado correctamente" });
-                }
+                res.status(200).json({ message: "Curso eliminado correctamente" });
             }
             catch (err) {
                 if (err instanceof Error) {
