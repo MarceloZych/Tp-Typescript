@@ -19,6 +19,8 @@ async function main(){
             console.log('Error al conectar la BD ',err.message);
          }
     }
+    
+
 }
 
 main();

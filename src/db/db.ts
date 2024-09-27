@@ -1,10 +1,10 @@
 import { createConnection } from 'mysql2/promise';
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
-import { ProfesorModel } from '../models/ProfesorModel';
-import { EstudianteModel } from '../models/EstudianteModel';
-import { CursosEstudiantesModel } from '../models/CursosEstudiantesModel';
-import { CursoModel } from '../models/CursoModel';
+import { Profesor } from '../models/ProfesorModel';
+import { Estudiante } from '../models/EstudianteModel';
+import { CursoEstudiante } from '../models/CursosEstudiantesModel';
+import { Curso } from '../models/CursoModel';
 dotenv.config();
 
 const port: number = process.env.BD_PORT ? parseInt(process.env.BD_PORT, 10) : 3306;
@@ -33,7 +33,7 @@ export const AppDataSource = new DataSource({
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    entities: [ProfesorModel, EstudianteModel, CursoModel, CursosEstudiantesModel],
+    entities: [Profesor, Estudiante, Curso, CursoEstudiante],
     synchronize: false,
     logging: true
 });

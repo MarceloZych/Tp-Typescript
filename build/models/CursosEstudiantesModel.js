@@ -9,39 +9,39 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CursosEstudiantesModel = void 0;
+exports.CursoEstudiante = void 0;
 const typeorm_1 = require("typeorm");
-const EstudianteModel_1 = require("./EstudianteModel");
 const CursoModel_1 = require("./CursoModel");
-let CursosEstudiantesModel = class CursosEstudiantesModel {
+const EstudianteModel_1 = require("./EstudianteModel");
+let CursoEstudiante = class CursoEstudiante {
 };
-exports.CursosEstudiantesModel = CursosEstudiantesModel;
+exports.CursoEstudiante = CursoEstudiante;
 __decorate([
     (0, typeorm_1.PrimaryColumn)(),
     __metadata("design:type", Number)
-], CursosEstudiantesModel.prototype, "estudiante_id", void 0);
+], CursoEstudiante.prototype, "estudiante_id", void 0);
 __decorate([
     (0, typeorm_1.PrimaryColumn)(),
     __metadata("design:type", Number)
-], CursosEstudiantesModel.prototype, "curso_id", void 0);
+], CursoEstudiante.prototype, "curso_id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'float' }),
+    (0, typeorm_1.Column)({ type: 'float', default: () => 0 }),
     __metadata("design:type", Number)
-], CursosEstudiantesModel.prototype, "nota", void 0);
+], CursoEstudiante.prototype, "nota", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'date' }),
+    (0, typeorm_1.Column)({ type: 'date', default: () => 'CURRENT_DATE' }),
     __metadata("design:type", Date)
-], CursosEstudiantesModel.prototype, "fecha", void 0);
+], CursoEstudiante.prototype, "fecha", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => EstudianteModel_1.EstudianteModel, (estudiante) => estudiante.cursos),
+    (0, typeorm_1.ManyToOne)(() => EstudianteModel_1.Estudiante, (estudiante) => estudiante.cursos),
     (0, typeorm_1.JoinColumn)({ name: 'estudiante_id' }),
-    __metadata("design:type", EstudianteModel_1.EstudianteModel)
-], CursosEstudiantesModel.prototype, "estudiante", void 0);
+    __metadata("design:type", EstudianteModel_1.Estudiante)
+], CursoEstudiante.prototype, "estudiante", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => CursoModel_1.CursoModel, (curso) => curso.estudiantes),
+    (0, typeorm_1.ManyToOne)(() => CursoModel_1.Curso, (curso) => curso.estudiantes),
     (0, typeorm_1.JoinColumn)({ name: 'curso_id' }),
-    __metadata("design:type", CursoModel_1.CursoModel)
-], CursosEstudiantesModel.prototype, "curso", void 0);
-exports.CursosEstudiantesModel = CursosEstudiantesModel = __decorate([
+    __metadata("design:type", CursoModel_1.Curso)
+], CursoEstudiante.prototype, "curso", void 0);
+exports.CursoEstudiante = CursoEstudiante = __decorate([
     (0, typeorm_1.Entity)('cursos_estudiantes')
-], CursosEstudiantesModel);
+], CursoEstudiante);

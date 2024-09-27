@@ -1,34 +1,25 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, 
-    JoinTable, CreateDateColumn, UpdateDateColumn, ManyToMany } from 'typeorm'
-import { ProfesorModel } from './ProfesorModel'
-import { EstudianteModel } from './EstudianteModel'
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import {Estudiante} from "./EstudianteModel";
+import {Profesor} from "./ProfesorModel";
 
-@Entity('curso')
-export class CursoModel {
+@Entity('cursos')
+export class Curso{
     @PrimaryGeneratedColumn()
-    id: number
-
+    id:number;
     @Column()
-    nombre: string
+    nombre:string;
+    @Column({type:'text'})
+    descripcion:string;
 
-    @Column('text')
-    descripcion: string
-
-    @CreateDateColumn()
-    createAt: Date
-
-    @UpdateDateColumn()
-    updateAt: Date
-
-    @ManyToOne(()=> ProfesorModel, profesor => profesor.cursos)
+    @ManyToOne(()=>Profesor)
     @JoinColumn({name:'profesor_id'})
-    profesor: ProfesorModel
+    profesor:Profesor;
 
-    @ManyToMany(()=> EstudianteModel)
+    @ManyToMany(()=>Estudiante)
     @JoinTable({
-        name: 'cursos_estudiantes',
-        joinColumn: { name: 'curso_id', referencedColumnName: 'id' },
-        inverseJoinColumn: { name: 'estudiante_id', referencedColumnName: 'id' }
+        name:'cursos_estudiantes',
+        joinColumn:{name:'curso_id', referencedColumnName:'id'},
+        inverseJoinColumn:{name:'estudiante_id', referencedColumnName:'id'}
     })
-    estudiantes: EstudianteModel[]
+    estudiantes:Estudiante[];
 }

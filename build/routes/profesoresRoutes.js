@@ -12,19 +12,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const ProfesorController_1 = __importDefault(require("../controllers/ProfesorController"));
-const router = (0, express_1.Router)();
-router.get('/listarProfesores', ProfesorController_1.default.consultarTodos);
+const express_1 = __importDefault(require("express"));
+const ProfesorController_1 = require("../controllers/ProfesorController");
+const router = express_1.default.Router();
+// Listar todos los profesores
+router.get('/listarProfesores', ProfesorController_1.consultarTodos);
+// Mostrar formulario para crear profesor
 router.get('/crearProfesores', (req, res) => {
     res.render('crearProfesores', {
-        pagina: 'Crear Estudiante'
+        pagina: 'Crear Profesor',
     });
 });
-router.post('/', ProfesorController_1.default.insertar);
+// Insertar un nuevo profesor con validaciones
+router.post('/', (0, ProfesorController_1.validar)(), ProfesorController_1.insertar);
+// Mostrar formulario para modificar profesor
 router.get('/modificarProfesor/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield ProfesorController_1.default.consultarUno(req, res);
+        const profesor = yield (0, ProfesorController_1.consultarUno)(req, res);
+        if (!profesor) {
+            return res.status(404).send('Profesor no encontrado');
+        }
+        res.render('modificarProfesor', {
+            profesor,
+        });
     }
     catch (err) {
         if (err instanceof Error) {
@@ -32,6 +42,8 @@ router.get('/modificarProfesor/:id', (req, res) => __awaiter(void 0, void 0, voi
         }
     }
 }));
-router.put('/:id', ProfesorController_1.default.modificar);
-router.delete('/:id', ProfesorController_1.default.eliminar);
+// Modificar un profesor
+router.put('/:id', ProfesorController_1.modificar);
+// Eliminar un profesor
+router.delete('/:id', ProfesorController_1.eliminar);
 exports.default = router;

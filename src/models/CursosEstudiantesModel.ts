@@ -1,26 +1,26 @@
-import { Entity, Column, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
-import { EstudianteModel } from "./EstudianteModel";
-import { CursoModel } from "./CursoModel";
+import { Column, PrimaryColumn, Entity, ManyToOne, JoinColumn } from "typeorm";
+import { Curso } from './CursoModel';
+import { Estudiante } from './EstudianteModel';
 
 @Entity('cursos_estudiantes')
-export class CursosEstudiantesModel {
+export class CursoEstudiante {
     @PrimaryColumn()
-    public estudiante_id: number
+    estudiante_id: number;
 
     @PrimaryColumn()
-    public curso_id: number
+    curso_id: number;
 
-    @Column({ type: 'float' })
-    public nota?: number
+    @Column({ type: 'float', default: () => 0 })
+    nota: number;
 
-    @Column({ type: 'date' })
-    public fecha?: Date
+    @Column({ type: 'date', default: () => 'CURRENT_DATE' })
+    fecha: Date;
 
-    @ManyToOne(()=> EstudianteModel, (estudiante)=> estudiante.cursos)
+    @ManyToOne(() => Estudiante, (estudiante) => estudiante.cursos)
     @JoinColumn({ name: 'estudiante_id' })
-    public estudiante: EstudianteModel
+    public estudiante: Estudiante;
 
-    @ManyToOne(()=> CursoModel, (curso)=> curso.estudiantes)
+    @ManyToOne(() => Curso, (curso) => curso.estudiantes)
     @JoinColumn({ name: 'curso_id' })
-    public curso!: CursoModel
+    public curso: Curso;
 }

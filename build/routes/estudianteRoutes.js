@@ -12,19 +12,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const EstudianteController_1 = __importDefault(require("../controllers/EstudianteController"));
-const router = (0, express_1.Router)();
-router.get('/listarEstudiantes', EstudianteController_1.default.consultarTodos);
+const express_1 = __importDefault(require("express"));
+const EstudianteController_1 = require("../controllers/EstudianteController");
+const router = express_1.default.Router();
+router.get('/listarEstudiantes', EstudianteController_1.consultarTodos);
+//insertar
 router.get('/crearEstudiantes', (req, res) => {
     res.render('crearEstudiantes', {
-        pagina: 'Crear Estudiante'
+        pagina: 'Crear Estudiante',
     });
 });
-router.post('/', EstudianteController_1.default.insertar);
+router.post('/', (0, EstudianteController_1.validar)(), EstudianteController_1.insertar);
+//modificar
 router.get('/modificarEstudiante/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield EstudianteController_1.default.consultarUno(req, res);
+        const estudiante = yield (0, EstudianteController_1.consultarUno)(req, res);
+        if (!estudiante) {
+            return res.status(404).send('Estudiante no encontrado');
+        }
+        res.render('modificarEstudiante', {
+            estudiante,
+        });
     }
     catch (err) {
         if (err instanceof Error) {
@@ -32,6 +40,7 @@ router.get('/modificarEstudiante/:id', (req, res) => __awaiter(void 0, void 0, v
         }
     }
 }));
-router.put('/:id', EstudianteController_1.default.modificar);
-router.delete('/:id', EstudianteController_1.default.eliminar);
+router.put('/:id', EstudianteController_1.modificar);
+//eliminar
+router.delete('/:id', EstudianteController_1.eliminar);
 exports.default = router;

@@ -1,127 +1,145 @@
-import { Request, Response } from "express";
-import { AppDataSource } from "../db/db";
-import { ProfesorModel } from "../models/ProfesorModel";
-import { check, validationResult } from "express-validator";
+import { Request, Response, NextFunction } from 'express';
+import { check, validationResult } from 'express-validator';
+import { Profesor } from '../models/ProfesorModel';
+import { AppDataSource } from '../db/db';
 
-const profesorRepository = AppDataSource.getRepository(ProfesorModel);
+var profesores: Profesor[];
 
 export const validar = () => [
     check('dni')
         .notEmpty().withMessage('El DNI es obligatorio')
         .isLength({ min: 7 }).withMessage('El DNI debe tener al menos 7 caracteres'),
     check('nombre').notEmpty().withMessage('El nombre es obligatorio')
-        .isLength({ min: 3 }).withMessage('El nombre debe tener al menos 3 caracteres'),
-    check('apellido').notEmpty().withMessage('El apellido es obligatorio')
-        .isLength({ min: 3 }).withMessage('El apellido debe tener al menos 3 caracteres'),
-    check('email').notEmpty().withMessage('Debe proporcionar un email valido')
-        .isEmail().withMessage('Formato de email inválido'),
+        .isLength({ min: 3 }).withMessage('El Nombre debe tener al menos 3 caracteres'),
+    check('apellido').notEmpty().withMessage('El apellido es obligatorio')    
+        .isLength({ min: 3 }).withMessage('El Apellido debe tener al menos 3 caracteres'),
+    check('email').isEmail().withMessage('Debe proporcionar un email válido'),
+    (req: Request, res: Response, next: NextFunction) => {
+        const errores = validationResult(req);
+        if (!errores.isEmpty()) {
+            return res.render('crearProfesores', {
+                pagina: 'Crear Profesor',
+                errores: errores.array()
+            });
+        }
+        next();
+    }
 ];
 
-class ProfesorController {
-
-    constructor() { }
-
-    async consultarTodos(req: Request, res: Response): Promise<void> {
-        console.log("Consultando todos los profesores...");
-        try {
-            const profesores = await profesorRepository.find();
-            res.render('listarProfesores', { pagina: 'Listar Profesores', profesores});
-        } catch (err) {
-            if (err instanceof Error) {
-                res.status(500).send(err.message);
-            }
+export const consultarTodos = async (req: Request, res: Response) => {
+    try {
+        const profesorRepository = AppDataSource.getRepository(Profesor);
+        profesores = await profesorRepository.find();
+        res.render('listarProfesores', {
+            pagina: 'Lista de Profesores',
+            profesores 
+        });
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            res.status(500).send(err.message);
         }
     }
+};
 
-    async consultarUno(req: Request, res: Response): Promise<void> {
-        const { id } = req.params;
-        const idNumber = Number(id);
+export const consultarUno = async (req: Request, res: Response): Promise<Profesor | null> => {
+    const { id } = req.params;
+    const idNumber = Number(id);
+    if (isNaN(idNumber)) {
+        throw new Error('ID inválido, debe ser un número');
+    }
+    try {
+        const profesorRepository = AppDataSource.getRepository(Profesor);
+        const profesor = await profesorRepository.findOne({ where: { id: idNumber } });
 
-        if (isNaN(idNumber)) {
-            res.status(400).json({ message: 'ID inválido, debe ser un número' });
-            return;
+        if (profesor) {
+            return profesor;
+        } else {
+            return null; 
         }
-
-        try {
-            const profesor = await profesorRepository.findOne({ where: { id:idNumber } });
-            if (!profesor) {
-                res.status(404).send("Profesor no encontrado");
-                return;
-            }
-            res.render('modificarProfesor', {profesor, pagina: 'Modificar Profesor'});
-        } catch (err) {
-            if (err instanceof Error) {
-                res.status(500).send(err.message);
-            }
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            throw err; 
+        } else {
+            throw new Error('Error desconocido');
         }
     }
+};
 
-    async insertar(req: Request, res: Response): Promise<void> {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            res.status(400).json({ errors: errors.array() });
-            return
-        }
-
-        try {
-            const nuevoProfesor = profesorRepository.create(req.body);
-            const profesorGuardado = await profesorRepository.save(nuevoProfesor);
-            res.status(201).json(profesorGuardado);
-            return res.redirect('/profesores/listarProfesores');
-        } catch (err) {
-            if (err instanceof Error) {
-                res.status(500).json({ message: err.message });
-            }
-        }
+export const insertar = async (req: Request, res: Response): Promise<void> => {
+    const errores = validationResult(req);
+    if (!errores.isEmpty()) {
+        return res.render('cargaProfesores', {
+            pagina: 'Crear Profesor',
+            errores: errores.array()
+        });
     }
+    const { dni, nombre, apellido, email } = req.body;
 
-    async modificar(req: Request, res: Response): Promise<void> {
-        const { id } = req.params;
-        try {
-            const profesor = await profesorRepository.findOne({
-                where : {id: parseInt(id)}
+    try {
+        await AppDataSource.transaction(async (transactionalEntityManager) => {
+            const profesorRepository = transactionalEntityManager.getRepository(Profesor);
+            const existeProfesor = await profesorRepository.findOne({
+                where: [
+                    { dni },
+                    { email }
+                ]
             });
 
-            if (!profesor) {
-                res.sendStatus(404).send('Profesor no encotrado');
-                return
+            if (existeProfesor) {
+                throw new Error('El profesor ya existe.');
             }
-
-            profesorRepository.merge(profesor, req.body);
-            await profesorRepository.save(profesor);
-            return res.redirect('/profesores/listarProfesores');
-        } catch (err) {
-            if (err instanceof Error) {
-                res.sendStatus((500)).send(err.message);
-            }
+            const nuevoProfesor = profesorRepository.create({ dni, nombre, apellido, email });
+            await profesorRepository.save(nuevoProfesor);
+        });
+        const profesores = await AppDataSource.getRepository(Profesor).find();
+        res.render('listarProfesores', {
+            pagina: 'Lista de Profesores',
+            profesores
+        });
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            res.status(500).send(err.message);
         }
     }
+};
 
-
-    async eliminar(req: Request, res: Response): Promise<void> {
-        const { id } = req.params;
-        const idNumber = Number(id);
-    
-        if (isNaN(idNumber)) {
-            res.status(400).json({ message: 'ID inválido, debe ser un número' });
-            return;
+export const modificar = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { dni, nombre, apellido, email } = req.body;
+    try {   
+        const profesorRepository = AppDataSource.getRepository(Profesor);
+        const profesor = await profesorRepository.findOne({ where: { id: parseInt(id) } });
+        
+        if (!profesor) {
+            return res.status(404).send('Profesor no encontrado');
         }
-    
-        try {
-            const resultado = await profesorRepository.delete(idNumber);
-    
-            if (resultado.affected === 0) {
-                res.status(404).json({ message: 'Profesor no encontrado' });
-                return;
+        profesorRepository.merge(profesor, { dni, nombre, apellido, email });
+        await profesorRepository.save(profesor);
+        return res.redirect('/profesores/listarProfesores');
+    } catch (error) {
+        console.error('Error al modificar el profesor:', error);
+        return res.status(500).send('Error del servidor');
+    }
+};
+
+export const eliminar = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    try {
+        await AppDataSource.transaction(async transactionalEntityManager => {
+            const profesorRepository = transactionalEntityManager.getRepository(Profesor);
+            const deleteResult = await profesorRepository.delete(id);
+
+            if (deleteResult.affected === 1) {
+                return res.json({ mensaje: 'Profesor eliminado' }); 
+            } else {
+                throw new Error('Profesor no encontrado');
             }
-    
-            res.status(200).json({ message: 'Profesor eliminado correctamente' });
-        } catch (err) {
-            if (err instanceof Error) {
-                res.status(500).send(err.message);
-            }
+        });
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            res.status(400).json({ mensaje: err.message });
+        } else {
+            res.status(400).json({ mensaje: 'Error' });
         }
     }
-}
-
-export default new ProfesorController();
+};

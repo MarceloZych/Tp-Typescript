@@ -1,30 +1,37 @@
-import {Router} from "express";
-import EstudianteController from '../controllers/EstudianteController'
+import express from 'express';
+import { insertar, modificar, eliminar, validar, consultarUno, consultarTodos } from '../controllers/EstudianteController';
 
-const router = Router()
+const router = express.Router();
 
-router.get('/listarEstudiantes', EstudianteController.consultarTodos)
+router.get('/listarEstudiantes', consultarTodos);
 
+//insertar
 router.get('/crearEstudiantes', (req, res) => {
     res.render('crearEstudiantes', {
-        pagina: 'Crear Estudiante'
-    })
-})
+        pagina: 'Crear Estudiante',
+    });
+});
+router.post('/', validar(), insertar);
 
-router.post('/', EstudianteController.insertar)
-
+//modificar
 router.get('/modificarEstudiante/:id', async (req, res) => {
     try {
-        await EstudianteController.consultarUno(req, res)
+        const estudiante = await consultarUno(req, res); 
+        if (!estudiante) {
+            return res.status(404).send('Estudiante no encontrado');
+        }
+        res.render('modificarEstudiante', {
+            estudiante, 
+        });
     } catch (err: unknown) {
         if (err instanceof Error) {
-            res.status(500).send(err.message)
+            res.status(500).send(err.message);
         }
     }
-})
+});
+router.put('/:id', modificar); 
 
-router.put('/:id', EstudianteController.modificar)
+//eliminar
+router.delete('/:id', eliminar);
 
-router.delete('/:id', EstudianteController.eliminar)
-
-export default router
+export default router;

@@ -68,7 +68,7 @@ exports.AppDataSource = new typeorm_1.DataSource({
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    entities: [ProfesorModel_1.ProfesorModel, EstudianteModel_1.EstudianteModel, CursoModel_1.CursoModel, CursosEstudiantesModel_1.CursosEstudiantesModel],
+    entities: [ProfesorModel_1.Profesor, EstudianteModel_1.Estudiante, CursoModel_1.Curso, CursosEstudiantesModel_1.CursoEstudiante],
     synchronize: false,
     logging: true
 });

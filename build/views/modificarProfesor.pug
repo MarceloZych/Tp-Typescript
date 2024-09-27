@@ -6,7 +6,7 @@ block contenido
             span.font-normal Universidad
         h2.text-center.text-2xl.font-extrabold= pagina
 
-        if errores && errores.length > 0
+        if errores
             div(class="max-w-md mx-auto my-10")
                 each error in errores
                     p.bg-red-600.text-white.uppercase.text-xs.text-center.p-2.mb-1.font-bold= error.msg
@@ -29,15 +29,14 @@ block contenido
                     
                     div
                         label.block.text-sm.uppercase.text-gray-500.mb-3.font-bold(for="email") Email
-                        input#email.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Email" type="text" name="email" value=profesor.email)
-                    
-                                        
+                        input#email.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Email" type="email" name="email" value=profesor.email)
+
                     div
-                        label.block.text-sm.uppercase.text-gray-500.mb-3.font-bold(for="profesion") Profesion
-                        input#profesion.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="profesion" type="text" name="profesion" value=profesor.profesion)
-                    
+                        label.block.text-sm.uppercase.text-gray-500.mb-3.font-bold(for="profesion") Profesión
+                        input#profesion.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Profesión" type="text" name="profesion" value=profesor.profesion)
+
                     div
-                        label.block.text-sm.uppercase.text-gray-500.mb-3.font-bold(for="telefono") Telefono
-                        input#telefono.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Telefono" type="text" name="telefono" value=profesor.telefono)
+                        label.block.text-sm.uppercase.text-gray-500.mb-3.font-bold(for="telefono") Teléfono
+                        input#telefono.w-full.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Teléfono" type="text" name="telefono" value=profesor.telefono)
                     
                     button.bg-blue-500.text-white.px-4.py-2.rounded-md.mt-4(type='submit') Modificar Profesor

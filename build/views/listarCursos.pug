@@ -1,38 +1,32 @@
 extends ./layout
 
 block contenido
-    .flex.justify-end.mb-4
-        ul.flex.space-x-4
-            li
-                a(href="/cursos/crearCrusos" class="text-green-600 hover:text-green-800") Agregar Curso
-    
-    .py-10
-        h1.text-4xl.my-10.font-extrabold.text-center Proyecto
-            span.font-normal Universidad
-        h2.text-center.text-2xl.font-extrabold= pagina
-      
-        table.table-auto.w-full.mt-4
-            thead
-                tr
-                    th.text-left.text-gray-500.uppercase.px-6.py-3 Nombre
-                    th.text-left.text-gray-500.uppercase.px-6.py-3 descripcion
-                    th.text-left.text-gray-500.uppercase.px-6.py-3 profesor
-                    th.text-left.text-gray-500.uppercase.px-6.py-3 Estudiantes Inscriptos
-            tbody
-                each cursos in listaCursos || []
+    .container.mx-auto.px-4
+        .flex.justify-end.mb-4
+            a.bg-green-600.text-black.font-bold.py-2.px-4.rounded.transition(class="hover:bg-green-700", href="/cursos/crearCursos") Agregar Curso
+
+        .py-10
+            h1.text-5xl.my-10.font-extrabold.text-center.text-gray-800
+                | Proyecto
+                span.font-normal.text-gray-600 Universidad
+            h2.text-center.text-2xl.font-extrabold.text-gray-700.mt-4= pagina
+
+            table.table-auto.w-full.mt-8.border-collapse.shadow-lg
+                thead.bg-gray-200
                     tr
-                        td.px-6.py-4= cursos.nombre
-                        td.px-6.py-4= cursos.descripcion
-                        td.px-6.py-4= cursos.profesor ? cursos.profesor.nombre : 'Sin Profesor'
-                        td.px-6.py-4
-                            if cursos.estudiantes.length > 0
-                                each estudiante in cursos.estudiantes || []
-                                    p= estudiante.nombre
-                            else
-                                p No hay estudiantes inscritos.
-                        td.px--6.py--4
-                            a.text-blue-500(href=`/cursos/modificarCurso/${cursos.id}`) Editar
-                            a.text-red-500.ml-2(href="#", onclick=`eliminarCruso('${cursos.id}')`) Eliminar
+                        th.border-b.border-gray-300.text-left.text-gray-600.uppercase.px-6.py-3 Nombre
+                        th.border-b.border-gray-300.text-left.text-gray-600.uppercase.px-6.py-3 Descripción
+                        th.border-b.border-gray-300.text-left.text-gray-600.uppercase.px-6.py-3 Profesor
+                        th.border-b.border-gray-300.text-left.text-gray-600.uppercase.px-6.py-3 Acciones
+                tbody
+                    each curso in cursos
+                        tr(class="hover:bg-gray-100 transition")
+                            td.border-b.border-gray-300.px-6.py-4.text-gray-700= curso.nombre
+                            td.border-b.border-gray-300.px-6.py-4.text-gray-700= curso.descripcion
+                            td.border-b.border-gray-300.px-6.py-4.text-gray-700= curso.profesor ? curso.profesor.nombre + ' ' + curso.profesor.apellido : 'Sin profesor'
+                            td.border-b.border-gray-300.px-6.py-4
+                                a.bg-blue-500.text-white.font-bold.py-1.px-3.rounded.transition(href=`/cursos/modificarCurso/${curso.id}`, class="hover:bg-blue-700") Editar
+                                a.bg-red-500.text-white.font-bold.py-1.px-3.rounded.transition.ml-2(href="#", onclick=`eliminarCurso('${curso.id}')`, class="hover:bg-red-700") Eliminar
 
 block scripts
     script.
