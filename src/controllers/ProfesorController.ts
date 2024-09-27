@@ -73,7 +73,7 @@ export const insertar = async (req: Request, res: Response): Promise<void> => {
             errores: errores.array()
         });
     }
-    const { dni, nombre, apellido, email } = req.body;
+    const { dni, nombre, apellido, email, profesion, telefono } = req.body;
 
     try {
         await AppDataSource.transaction(async (transactionalEntityManager) => {
@@ -88,7 +88,7 @@ export const insertar = async (req: Request, res: Response): Promise<void> => {
             if (existeProfesor) {
                 throw new Error('El profesor ya existe.');
             }
-            const nuevoProfesor = profesorRepository.create({ dni, nombre, apellido, email });
+            const nuevoProfesor = profesorRepository.create({ dni, nombre, apellido, email, profesion, telefono });
             await profesorRepository.save(nuevoProfesor);
         });
         const profesores = await AppDataSource.getRepository(Profesor).find();
@@ -105,7 +105,7 @@ export const insertar = async (req: Request, res: Response): Promise<void> => {
 
 export const modificar = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { dni, nombre, apellido, email } = req.body;
+    const { dni, nombre, apellido, email, profesion, telefono } = req.body;
     try {   
         const profesorRepository = AppDataSource.getRepository(Profesor);
         const profesor = await profesorRepository.findOne({ where: { id: parseInt(id) } });
@@ -113,7 +113,7 @@ export const modificar = async (req: Request, res: Response) => {
         if (!profesor) {
             return res.status(404).send('Profesor no encontrado');
         }
-        profesorRepository.merge(profesor, { dni, nombre, apellido, email });
+        profesorRepository.merge(profesor, { dni, nombre, apellido, email, profesion, telefono });
         await profesorRepository.save(profesor);
         return res.redirect('/profesores/listarProfesores');
     } catch (error) {

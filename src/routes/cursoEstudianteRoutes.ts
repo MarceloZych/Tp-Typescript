@@ -41,9 +41,6 @@ router.post('/inscribirEstudiante', validar(), inscribirEstudiante);
 // Procesar actualización de nota
 router.post('/modificarNota/:curso_id/:estudiante_id', validar(), actualizarNota);
 
-// Procesar inscripción de estudiante en curso
-router.post('/inscribirEstudiante', validar(), inscribirEstudiante);
-
 // Renderizar formulario para actualizar nota
 router.get('/modificarNota/:curso_id/:estudiante_id', async (req, res) => {
     try {

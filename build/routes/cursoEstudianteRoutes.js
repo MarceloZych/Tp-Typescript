@@ -46,8 +46,6 @@ router.get('/inscribirEstudiante', (req, res) => __awaiter(void 0, void 0, void 
 router.post('/inscribirEstudiante', (0, CursoEstudianteController_1.validar)(), CursoEstudianteController_1.inscribirEstudiante);
 // Procesar actualización de nota
 router.post('/modificarNota/:curso_id/:estudiante_id', (0, CursoEstudianteController_1.validar)(), CursoEstudianteController_1.actualizarNota);
-// Procesar inscripción de estudiante en curso
-router.post('/inscribirEstudiante', (0, CursoEstudianteController_1.validar)(), CursoEstudianteController_1.inscribirEstudiante);
 // Renderizar formulario para actualizar nota
 router.get('/modificarNota/:curso_id/:estudiante_id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {

@@ -85,7 +85,7 @@ const insertar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             errores: errores.array()
         });
     }
-    const { dni, nombre, apellido, email } = req.body;
+    const { dni, nombre, apellido, email, profesion, telefono } = req.body;
     try {
         yield db_1.AppDataSource.transaction((transactionalEntityManager) => __awaiter(void 0, void 0, void 0, function* () {
             const profesorRepository = transactionalEntityManager.getRepository(ProfesorModel_1.Profesor);
@@ -98,7 +98,7 @@ const insertar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             if (existeProfesor) {
                 throw new Error('El profesor ya existe.');
             }
-            const nuevoProfesor = profesorRepository.create({ dni, nombre, apellido, email });
+            const nuevoProfesor = profesorRepository.create({ dni, nombre, apellido, email, profesion, telefono });
             yield profesorRepository.save(nuevoProfesor);
         }));
         const profesores = yield db_1.AppDataSource.getRepository(ProfesorModel_1.Profesor).find();
@@ -116,14 +116,14 @@ const insertar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.insertar = insertar;
 const modificar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const { dni, nombre, apellido, email } = req.body;
+    const { dni, nombre, apellido, email, profesion, telefono } = req.body;
     try {
         const profesorRepository = db_1.AppDataSource.getRepository(ProfesorModel_1.Profesor);
         const profesor = yield profesorRepository.findOne({ where: { id: parseInt(id) } });
         if (!profesor) {
             return res.status(404).send('Profesor no encontrado');
         }
-        profesorRepository.merge(profesor, { dni, nombre, apellido, email });
+        profesorRepository.merge(profesor, { dni, nombre, apellido, email, profesion, telefono });
         yield profesorRepository.save(profesor);
         return res.redirect('/profesores/listarProfesores');
     }

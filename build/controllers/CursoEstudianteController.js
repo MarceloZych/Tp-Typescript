@@ -55,6 +55,13 @@ exports.validar = validar;
 const inscribirEstudiante = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('Datos recibidos de inscribirEstudiante:', req.body);
     const { curso_id, estudiante_id, nota } = req.body;
+    console.log('curso_id:', curso_id, 'estudiante_id:', estudiante_id);
+    if (!curso_id || isNaN(curso_id)) {
+        return res.status(400).json({ error: 'curso_id es inválido o no está presente' });
+    }
+    if (!estudiante_id || isNaN(estudiante_id)) {
+        return res.status(400).json({ error: 'estudiante_id es inválido o no está presente' });
+    }
     try {
         const cursoRepository = db_1.AppDataSource.getRepository(CursoModel_1.Curso);
         const estudianteRepository = db_1.AppDataSource.getRepository(EstudianteModel_1.Estudiante);
